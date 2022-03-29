@@ -29,14 +29,14 @@ replace_all () {
   mv $filename.modified $filename
 }
 
-for i in aws azure common shared openstack vsphere; do
-  mkdir -p $(pwd)/helm/policies-$i/templates
+for i in dx; do
+  mkdir -p $(pwd)/helm/kyverno-policies-$i/templates
 
-  cp -a $(pwd)/policies/$i/. $(pwd)/helm/policies-$i/templates
+  cp -a $(pwd)/policies/$i/. $(pwd)/helm/kyverno-policies-$i/templates
 
   # based on https://github.com/koalaman/shellcheck/wiki/SC2044
   while IFS= read -r -d '' filename
   do
     replace_all "$filename"
-  done <   <(find "$(pwd)"/helm/policies-"$i"/templates -name '*.yaml' -print0)
+  done <   <(find "$(pwd)"/helm/kyverno-policies-"$i"/templates -name '*.yaml' -print0)
 done
