@@ -90,23 +90,8 @@ jobs:
           command: |
             make dabs
       - run-ats:
-          chart_archive_prefix: "policies-aws"
-          tests_dir: "helm/policies-aws/tests/ats"
-      - run-ats:
-          chart_archive_prefix: "policies-azure"
-          tests_dir: "helm/policies-azure/tests/ats"
-      - run-ats:
-          chart_archive_prefix: "policies-common"
-          tests_dir: "helm/policies-common/tests/ats"
-      - run-ats:
-          chart_archive_prefix: "policies-openstack"
-          tests_dir: "helm/policies-openstack/tests/ats"
-      - run-ats:
-          chart_archive_prefix: "policies-shared"
-          tests_dir: "helm/policies-shared/tests/ats"
-      - run-ats:
-          chart_archive_prefix: "policies-vsphere"
-          tests_dir: "helm/policies-vsphere/tests/ats"
+          chart_archive_prefix: "kyverno-policies-dx"
+          tests_dir: "helm/kyverno-policies-dx/tests/ats"
       - run:
           name: Export kind logs
           when: always

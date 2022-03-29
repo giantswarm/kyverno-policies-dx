@@ -669,7 +669,6 @@ def azuremachinepool(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete azuremachinepool {machinepool_name}", output=None)
     LOGGER.info(f"AzureMachinePool {machinepool_name} deleted")
 
-
 # Silence fixtures
 
 @pytest.fixture
