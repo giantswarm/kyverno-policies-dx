@@ -30,9 +30,9 @@ replace_all () {
 }
 
 for i in dx; do
-  mkdir -p $(pwd)/helm/policies-$i/templates
+  mkdir -p $(pwd)/helm/kyverno-policies-$i/templates
 
-  cp -a $(pwd)/policies/$i/. $(pwd)/helm/policies-$i/templates
+  cp -a $(pwd)/policies/$i/. $(pwd)/helm/kyverno-policies-$i/templates
 
   # based on https://github.com/koalaman/shellcheck/wiki/SC2044
   while IFS= read -r -d '' filename
