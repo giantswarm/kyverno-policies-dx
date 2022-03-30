@@ -11,4 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/tree/master
