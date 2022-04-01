@@ -10,6 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
-- Push to AWS, Azure, KVM, and OpenStack collections.
+- Push to AWS, KVM, and OpenStack collections.
 
 [Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/tree/master
