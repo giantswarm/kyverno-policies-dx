@@ -150,19 +150,21 @@ workflows:
             tags:
               only: /^v.*/
 
-      - architect/push-to-app-collection:
-          name: push-kyverno-policies-dx-to-azure-app-collection
-          context: architect
-          app_name: "kyverno-policies-dx"
-          app_namespace: "giantswarm"
-          app_collection_repo: "azure-app-collection"
-          requires:
-            - push-kyverno-policies-dx-to-catalog
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v.*/
+        # On Azure, the "Check deprecated APIs" policy is already deployed with policies-common as part of Azure releases.
+        # When Azure/CAPZ no longer ships the old policy app, this push to the azure collection should be enabled.
+      # - architect/push-to-app-collection:
+      #     name: push-kyverno-policies-dx-to-azure-app-collection
+      #     context: architect
+      #     app_name: "kyverno-policies-dx"
+      #     app_namespace: "giantswarm"
+      #     app_collection_repo: "azure-app-collection"
+      #     requires:
+      #       - push-kyverno-policies-dx-to-catalog
+      #     filters:
+      #       branches:
+      #         ignore: /.*/
+      #       tags:
+      #         only: /^v.*/
 
       - architect/push-to-app-collection:
           name: push-kyverno-policies-dx-to-kvm-app-collection
