@@ -12,7 +12,7 @@ metadata:
       registries helps reduce threat exposure by ensuring image pulls only come from them. This
       sample validates that container images only originate from the GiantSwarm registries.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: true
   rules:
   - name: validate-registries
