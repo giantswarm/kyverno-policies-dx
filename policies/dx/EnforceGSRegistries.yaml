@@ -23,7 +23,6 @@ spec:
     validate:
       message: >-
         Registry used is not a GiantSwarm registry
-      deny: {}
       pattern:
         spec:
           containers:
