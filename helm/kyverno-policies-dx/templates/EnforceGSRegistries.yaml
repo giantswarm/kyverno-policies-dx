@@ -23,7 +23,7 @@ spec:
         - Pod
     validate:
       message: >-
-        {{ `{{` }} images.containers.*.registry {{ `}}` }} is not a GiantSwarm registry
+        Registry used is not a GiantSwarm registry
       deny: {}
       pattern:
         spec:
