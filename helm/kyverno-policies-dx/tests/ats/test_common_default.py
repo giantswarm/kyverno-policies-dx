@@ -70,7 +70,21 @@ def test_kyverno_enforceregistries(run_pod_outside_gs) -> None:
     """
     found = False
     for result in run_pod_outside_gs['results']:
-        if result['policy'] == "enforce-giantswarm-registries" and result['resources']['name'] == "bad-registry" and result['result'] == "fail":
+        if result['policy'] == "restrict-image-registries" and result['resources']['name'] == "bad-registry" and result['result'] == "fail":
+            found = True
+    
+    assert found == True
+
+@pytest.mark.smoke
+def test_kyverno_enforceregistries(run_pod_inside_gs) -> None:
+    """
+    test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
+
+    :param run_pod_inside_gs: Pod with an accepted registry
+    """
+    found = False
+    for result in run_pod_outside_gs['results']:
+        if result['policy'] == "restrict-image-registries" and result['resources']['name'] == "good-registry" and result['result'] == "pass":
             found = True
     
     assert found == True
