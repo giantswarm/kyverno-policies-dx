@@ -62,6 +62,7 @@ def test_kubeadmconfig_auditpolicy(kubeadmconfig_with_audit_file) -> None:
     """
     assert len(kubeadmconfig_with_audit_file['spec']['files']) == 1
 
+@pytest.mark.smoke
 def test_kyverno_policy(fetch_policies) -> None:
     """
     test_kyverno_policy tests that the policy is present
