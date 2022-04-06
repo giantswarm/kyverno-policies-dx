@@ -798,7 +798,7 @@ def run_pod_outside_gs(kubernetes_cluster):
     LOGGER.info(f"Pod {pod_name} applied")
 
     raw = kubernetes_cluster.kubectl(
-        f"get polr polr-ns-defaul", output="yaml")
+        f"get polr polr-ns-default", output="yaml")
 
     kcp = yaml.safe_load(raw)
 
@@ -829,7 +829,7 @@ def run_pod_inside_gs(kubernetes_cluster):
     LOGGER.info(f"Pod {pod_name} applied")
 
     raw = kubernetes_cluster.kubectl(
-        f"get polr polr-ns-defaul", output="yaml")
+        f"get polr polr-ns-default", output="yaml")
 
     kcp = yaml.safe_load(raw)
 
