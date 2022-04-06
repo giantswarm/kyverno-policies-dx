@@ -29,3 +29,4 @@ spec:
         spec:
           containers:
           - image: "quay.io/giantswarm/* | docker.io/giantswarm/* | giantswarm/* | giantswarm.azurecr.io/giantswarm/* | registry-intl.cn-shanghai.aliyuncs.com/giantswarm/*"
+          

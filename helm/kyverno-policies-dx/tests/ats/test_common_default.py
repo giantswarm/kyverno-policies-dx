@@ -88,3 +88,4 @@ def test_kyverno_enforceregistries(run_pod_inside_gs) -> None:
             found = True
     
     assert found == True
+    

@@ -837,3 +837,4 @@ def run_pod_outside_gs(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete pod {cluster_name}", output=None)
     LOGGER.info(f"Pod {cluster_name} deleted")
+    
