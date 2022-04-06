@@ -808,8 +808,8 @@ def run_pod_outside_gs(kubernetes_cluster):
     LOGGER.info(f"Pod {cluster_name} deleted")
 
 @pytest.fixture
-def run_pod_outside_gs(kubernetes_cluster):
-    pod_name = "nginx-outside-gs-registries"
+def run_pod_inside_gs(kubernetes_cluster):
+    pod_name = "nginx-inside-gs-registries"
     c = dedent(f"""
         apiVersion: v1
         kind: Pod
@@ -837,4 +837,3 @@ def run_pod_outside_gs(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete pod {cluster_name}", output=None)
     LOGGER.info(f"Pod {cluster_name} deleted")
-    

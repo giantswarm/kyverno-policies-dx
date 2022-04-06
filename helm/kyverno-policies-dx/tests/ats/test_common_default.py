@@ -21,6 +21,8 @@ from ensure import kubeadm_control_plane
 from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
+from ensure import run_pod_outside_gs
+from ensure import run_pod_inside_gs
 
 import pytest
 from pytest_kube import forward_requests, wait_for_rollout, app_template
@@ -88,4 +90,3 @@ def test_kyverno_enforceregistries(run_pod_inside_gs) -> None:
             found = True
     
     assert found == True
-    
