@@ -773,3 +773,36 @@ def kubeadm_control_plane(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete kubeadmcontrolplane {cluster_name}", output=None)
     LOGGER.info(f"kubeadmcontrolplane {cluster_name} deleted")
+
+# Kyverno fixtures
+
+@pytest.fixture
+def run_pod_outside_gs(kubernetes_cluster):
+    pod_name = "nginx-outside-gs-registries"
+    c = dedent(f"""
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            cluster.x-k8s.io/cluster-name: {cluster_name}
+            cluster.x-k8s.io/watch-filter: capi
+          name: {pod_name}
+          namespace: default
+        spec:
+          containers:
+          - name: bad-registry
+            image: docker.io/nginx
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=c, output=None)
+    LOGGER.info(f"Pod {pod_name} applied")
+
+    raw = kubernetes_cluster.kubectl(
+        f"get polr polr-ns-defaul", output="yaml")
+
+    kcp = yaml.safe_load(raw)
+
+    yield kcp
+
+    kubernetes_cluster.kubectl(f"delete pod {cluster_name}", output=None)
+    LOGGER.info(f"Pod {cluster_name} deleted")

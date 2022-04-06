@@ -60,3 +60,17 @@ def test_kubeadmconfig_auditpolicy(kubeadmconfig_with_audit_file) -> None:
     :param kubeadmconfig_with_audit_file: KubeadmConfig CR which includes an existing audit file
     """
     assert len(kubeadmconfig_with_audit_file['spec']['files']) == 1
+
+@pytest.mark.smoke
+def test_kyverno_enforceregistries(run_pod_outside_gs) -> None:
+    """
+    test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
+
+    :param run_pod_outside_gs: Pod with unaccepted registry
+    """
+    found = False
+    for result in run_pod_outside_gs['results']:
+        if result['policy'] == "enforce-giantswarm-registries" and result['resources']['name'] == "bad-registry" and result['result'] == "fail":
+            found = True
+    
+    assert found == True
