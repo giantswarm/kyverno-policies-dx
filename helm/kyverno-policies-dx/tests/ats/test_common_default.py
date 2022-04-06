@@ -23,6 +23,7 @@ from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
 from ensure import run_pod_outside_gs
 from ensure import run_pod_inside_gs
+from ensure import fetch_policies
 
 import pytest
 from pytest_kube import forward_requests, wait_for_rollout, app_template
@@ -63,8 +64,21 @@ def test_kubeadmconfig_auditpolicy(kubeadmconfig_with_audit_file) -> None:
     """
     assert len(kubeadmconfig_with_audit_file['spec']['files']) == 1
 
+def test_kyverno_policy(fetch_policies) -> None:
+    """
+    test_kyverno_policy tests that the policy is present
+    """
+    found = False
+
+    for policy in fetch_policies['items']:
+        LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
+        if policy['metadata']['name'] == "enforce-giantswarm-registries":
+            found = True
+    
+    assert found == True
+
 @pytest.mark.smoke
-def test_kyverno_enforceregistries(run_pod_outside_gs) -> None:
+def test_kyverno_enforceregistries_unaccepted(run_pod_outside_gs) -> None:
     """
     test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
 
@@ -78,7 +92,7 @@ def test_kyverno_enforceregistries(run_pod_outside_gs) -> None:
     assert found == True
 
 @pytest.mark.smoke
-def test_kyverno_enforceregistries(run_pod_inside_gs) -> None:
+def test_kyverno_enforceregistries_accpeted(run_pod_inside_gs) -> None:
     """
     test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
 

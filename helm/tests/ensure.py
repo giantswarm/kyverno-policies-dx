@@ -777,6 +777,15 @@ def kubeadm_control_plane(kubernetes_cluster):
 # Kyverno fixtures
 
 @pytest.fixture
+def fetch_policies(kubernetes_cluster):
+    raw = kubernetes_cluster.kubectl(
+        f"get cpol", output="yaml")
+
+    kcp = yaml.safe_load(raw)
+
+    yield kcp
+
+@pytest.fixture
 def run_pod_outside_gs(kubernetes_cluster):
     pod_name = "nginx-outside-gs-registries"
     c = dedent(f"""
@@ -785,7 +794,6 @@ def run_pod_outside_gs(kubernetes_cluster):
         metadata:
           labels:
             cluster.x-k8s.io/cluster-name: {cluster_name}
-            cluster.x-k8s.io/watch-filter: capi
           name: {pod_name}
           namespace: default
         spec:
@@ -796,6 +804,13 @@ def run_pod_outside_gs(kubernetes_cluster):
 
     kubernetes_cluster.kubectl("apply", input=c, output=None)
     LOGGER.info(f"Pod {pod_name} applied")
+
+    # Get polr and print them
+    polr = yaml.safe_load(kubernetes_cluster.kubectl(
+        f"get polr", output="yaml"))
+
+    for report in polr['items']:
+      LOGGER.info(f"PolicyReport: {report['metadata']['name']} is present on the namespace")
 
     raw = kubernetes_cluster.kubectl(
         f"get polr polr-ns-default", output="yaml")
@@ -816,7 +831,6 @@ def run_pod_inside_gs(kubernetes_cluster):
         metadata:
           labels:
             cluster.x-k8s.io/cluster-name: {cluster_name}
-            cluster.x-k8s.io/watch-filter: capi
           name: {pod_name}
           namespace: default
         spec:
