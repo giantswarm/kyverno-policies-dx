@@ -21,8 +21,6 @@ from ensure import kubeadm_control_plane
 from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
-from ensure import run_pod_outside_gs
-from ensure import run_pod_inside_gs
 from ensure import fetch_policies
 
 import pytest
@@ -73,34 +71,6 @@ def test_kyverno_policy(fetch_policies) -> None:
     for policy in fetch_policies['items']:
         LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
         if policy['metadata']['name'] == "enforce-giantswarm-registries":
-            found = True
-    
-    assert found == True
-
-@pytest.mark.smoke
-def test_kyverno_enforceregistries_unaccepted(run_pod_outside_gs) -> None:
-    """
-    test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
-
-    :param run_pod_outside_gs: Pod with unaccepted registry
-    """
-    found = False
-    for result in run_pod_outside_gs['results']:
-        if result['policy'] == "restrict-image-registries" and result['resources']['name'] == "bad-registry" and result['result'] == "fail":
-            found = True
-    
-    assert found == True
-
-@pytest.mark.smoke
-def test_kyverno_enforceregistries_accpeted(run_pod_inside_gs) -> None:
-    """
-    test_kyverno_enforceregistries tests the enforce-giantswarm-registries Kyverno policy
-
-    :param run_pod_inside_gs: Pod with an accepted registry
-    """
-    found = False
-    for result in run_pod_outside_gs['results']:
-        if result['policy'] == "restrict-image-registries" and result['resources']['name'] == "good-registry" and result['result'] == "pass":
             found = True
     
     assert found == True

@@ -813,7 +813,7 @@ def run_pod_outside_gs(kubernetes_cluster):
       LOGGER.info(f"PolicyReport: {report['metadata']['name']} is present on the namespace")
 
     raw = kubernetes_cluster.kubectl(
-        f"get polr polr-ns-default", output="yaml")
+        f"get polr", output="yaml")
 
     kcp = yaml.safe_load(raw)
 
@@ -843,7 +843,7 @@ def run_pod_inside_gs(kubernetes_cluster):
     LOGGER.info(f"Pod {pod_name} applied")
 
     raw = kubernetes_cluster.kubectl(
-        f"get polr polr-ns-default", output="yaml")
+        f"get polr", output="yaml")
 
     kcp = yaml.safe_load(raw)
 
