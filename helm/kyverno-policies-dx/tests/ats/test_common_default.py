@@ -69,7 +69,7 @@ def test_kyverno_policy(fetch_policies) -> None:
     test_kyverno_policy tests that the policy is present
     """
     found = False
-
+    
     for policy in fetch_policies['items']:
         LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
         if policy['metadata']['name'] == "restrict-image-registries":
@@ -86,6 +86,9 @@ def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
     """
 
     found = False
+
+    if len(run_pod_outside_gs['items']) == 0:
+        LOGGER.warning("No policy reports present on the cluster")
 
     for report in run_pod_outside_gs['items']:
         LOGGER.info(f"Policy report {report['metadata']['name']} is present on the cluster")
