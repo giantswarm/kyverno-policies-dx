@@ -789,6 +789,8 @@ def fetch_policies(kubernetes_cluster):
 def run_pod_from_registries(kubernetes_cluster):
     bad_pod_name = "pod-outside-gs-registries"
     good_pod_name = "pod-inside-gs-registries"
+
+    # Create a Pod with a known bad registry
     c = dedent(f"""
         apiVersion: v1
         kind: Pod
@@ -806,6 +808,7 @@ def run_pod_from_registries(kubernetes_cluster):
     kubernetes_cluster.kubectl("apply", input=c, output=None)
     LOGGER.info(f"Pod {bad_pod_name} applied")
 
+    # Create a Pod with all the known good registries
     c = dedent(f"""
         apiVersion: v1
         kind: Pod
@@ -831,7 +834,7 @@ def run_pod_from_registries(kubernetes_cluster):
     kubernetes_cluster.kubectl("apply", input=c, output=None)
     LOGGER.info(f"Pod {good_pod_name} applied")
 
-    # Wait for a Polr to be created
+    # Wait for a PolicyReport to be created
     timeout = 0
 
     while timeout != 5:    

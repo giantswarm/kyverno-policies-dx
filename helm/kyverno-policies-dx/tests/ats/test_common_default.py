@@ -96,11 +96,13 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
 
         for policy_report in report['results']:
 
+            # Look for PolicyReports from the `restrict-image-registries` policy
             if policy_report['policy'] == "restrict-image-registries":
 
                 for resource in policy_report['resources']:
                     LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
 
+                    # Check for the Pod with bad registries and verify that it has a fail result
                     if resource['name'] == "pod-outside-gs-registries":
                         
                         if policy_report['result'] == "fail":
@@ -109,6 +111,7 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
                         else:
                             LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
 
+                    # Check for the Pod with good registries and verify that it has a pass result
                     if resource['name'] == "pod-inside-gs-registries":
                         
                         if policy_report['result'] == "pass":
