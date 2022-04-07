@@ -94,11 +94,20 @@ def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
         LOGGER.info(f"Policy report {report['metadata']['name']} is present on the cluster")
 
         for policy_report in report['results']:
-            LOGGER.info(f"Policy report for Policy {policy_report['policy']} and resource {policy_report['resources']['name']} is present on the cluster")
-            if policy_report['policy'] == "restrict-image-registries" and policy_report['resources']['name'] == "bad-registry":
-                if report['result'] == "fail":
-                    found = True
-                else:
-                    LOGGER.warning(f"Policy {policy_report['resources']['name']} is present but result is not correct")
+            LOGGER.info(f"Policy report for Policy {policy_report['policy']} is present on the cluster")
+
+            if policy_report['policy'] == "restrict-image-registries":
+
+                for resource in policy_report['resources']:
+
+                    if resource['name'] == "bad-registry":
+                        LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
+                        
+                        if policy_report['result'] == "fail":
+                            found = True
+                            break
+
+                        else:
+                            LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
 
     assert found == True
