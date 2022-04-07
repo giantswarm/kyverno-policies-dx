@@ -845,7 +845,13 @@ def run_pod_from_registries(kubernetes_cluster):
         time.sleep(15)
         timeout += 1
       else:
-        break
+        # Check that there is one result for each pod
+        for report in polr['items']:
+          if len(report['results']) != 2:
+            time.sleep(15)
+            timeout += 1
+          else:
+            break
 
     raw = kubernetes_cluster.kubectl(
         f"get polr", output="yaml")
