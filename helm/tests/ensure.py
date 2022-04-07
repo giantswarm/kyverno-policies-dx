@@ -814,7 +814,7 @@ def run_pod_outside_gs(kubernetes_cluster):
 
       if len(polr['items']) == 0:
         LOGGER.info(f"No PolicyReports present on the cluster")
-        time.sleep("15")
+        time.sleep(15)
         timeout += 1
       else:
         break
