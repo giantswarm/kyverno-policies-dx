@@ -847,11 +847,11 @@ def run_pod_from_registries(kubernetes_cluster):
       else:
         # Check that there is one result for each pod
         for report in polr['items']:
+          LOGGER.info(f"Report {report['metadata']['name']} has {len(report['results'])} results")
           if len(report['results']) < 2:
             time.sleep(15)
             timeout += 1
-          else:
-            break
+        break
 
     raw = kubernetes_cluster.kubectl(
         f"get polr", output="yaml")
