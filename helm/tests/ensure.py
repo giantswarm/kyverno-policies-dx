@@ -837,7 +837,7 @@ def run_pod_from_registries(kubernetes_cluster):
     # Wait for a PolicyReport to be created
     timeout = 0
 
-    while timeout != 5:    
+    while timeout < 5:    
       polr = yaml.safe_load(kubernetes_cluster.kubectl(
           f"get polr", output="yaml"))
 
@@ -847,7 +847,7 @@ def run_pod_from_registries(kubernetes_cluster):
       else:
         # Check that there is one result for each pod
         for report in polr['items']:
-          if len(report['results']) != 2:
+          if len(report['results']) < 2:
             time.sleep(15)
             timeout += 1
           else:
