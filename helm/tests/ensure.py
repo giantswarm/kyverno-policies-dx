@@ -805,12 +805,19 @@ def run_pod_outside_gs(kubernetes_cluster):
     kubernetes_cluster.kubectl("apply", input=c, output=None)
     LOGGER.info(f"Pod {pod_name} applied")
 
-    # Get polr and print them
-    polr = yaml.safe_load(kubernetes_cluster.kubectl(
-        f"get polr", output="yaml"))
+    # Wait for a Polr to be created
+    timeout = 0
 
-    for report in polr['items']:
-      LOGGER.info(f"PolicyReport: {report['metadata']['name']} is present on the namespace")
+    while timeout != 5:    
+      polr = yaml.safe_load(kubernetes_cluster.kubectl(
+          f"get polr", output="yaml"))
+
+      if len(polr['items']) == 0:
+        LOGGER.info(f"No PolicyReports present on the cluster")
+        time.sleep("15")
+        timeout += 1
+      else:
+        break
 
     raw = kubernetes_cluster.kubectl(
         f"get polr", output="yaml")
