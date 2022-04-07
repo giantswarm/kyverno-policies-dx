@@ -78,20 +78,20 @@ def test_kyverno_policy(fetch_policies) -> None:
     assert found == True
 
 @pytest.mark.smoke
-def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
+def test_kyverno_policy_reports(run_pod_from_registries) -> None:
     """
     test_kyverno_policy_reports tests the restrict-image-registries policy
 
-    :param run_pod_outside_gs: Pod with a container from outside GS registries
+    :param run_pod_from_registries: Pods with a containers from inside and outside GS registries
     """
 
     bad_registry_found = False
     good_registry_found = False
 
-    if len(run_pod_outside_gs['items']) == 0:
+    if len(run_pod_from_registries['items']) == 0:
         LOGGER.warning("No policy reports present on the cluster")
 
-    for report in run_pod_outside_gs['items']:
+    for report in run_pod_from_registries['items']:
         LOGGER.info(f"Policy report {report['metadata']['name']} is present on the cluster")
 
         for policy_report in report['results']:
