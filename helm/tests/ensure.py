@@ -820,7 +820,7 @@ def run_pod_outside_gs(kubernetes_cluster):
     yield kcp
 
     kubernetes_cluster.kubectl(f"delete pod {pod_name}", output=None)
-    LOGGER.info(f"Pod {cluster_name} deleted")
+    LOGGER.info(f"Pod {pod_name} deleted")
 
 @pytest.fixture
 def run_pod_inside_gs(kubernetes_cluster):
