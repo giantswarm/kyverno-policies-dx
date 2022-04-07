@@ -22,6 +22,7 @@ from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
 from ensure import fetch_policies
+from ensure import run_pod_outside_gs
 
 import pytest
 from pytest_kube import forward_requests, wait_for_rollout, app_template
@@ -71,7 +72,30 @@ def test_kyverno_policy(fetch_policies) -> None:
 
     for policy in fetch_policies['items']:
         LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
-        if policy['metadata']['name'] == "enforce-giantswarm-registries":
+        if policy['metadata']['name'] == "restrict-image-registries":
             found = True
     
+    assert found == True
+
+@pytest.mark.smoke
+def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
+    """
+    test_kyverno_policy_reports tests the restrict-image-registries policy
+
+    :param run_pod_outside_gs: Pod with a container from outside GS registries
+    """
+
+    found = False
+
+    for report in run_pod_outside_gs['items']:
+        LOGGER.info(f"Policy report {report['metadata']['name']} is present on the cluster")
+
+        for policy_report in report['results']:
+            LOGGER.info(f"Policy report for Policy {policy_report['policy']} and resource {policy_report['resources']['name']} is present on the cluster")
+            if policy_report['policy'] == "restrict-image-registries" and policy_report['resources']['name'] == "bad-registry":
+                if report['result'] == "fail":
+                    found = True
+                else:
+                    LOGGER.warning(f"Policy {policy_report['resources']['name']} is present but result is not correct")
+
     assert found == True
