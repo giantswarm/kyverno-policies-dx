@@ -118,4 +118,4 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
                         else:
                             LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
 
-    assert found == True
+    assert (bad_registry_found == True and good_registry_found == True)
