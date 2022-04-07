@@ -99,9 +99,9 @@ def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
             if policy_report['policy'] == "restrict-image-registries":
 
                 for resource in policy_report['resources']:
+                    LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
 
-                    if resource['name'] == "bad-registry":
-                        LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
+                    if resource['name'] == "nginx-outside-gs-registries":
                         
                         if policy_report['result'] == "fail":
                             found = True
