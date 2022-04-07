@@ -22,7 +22,7 @@ from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
 from ensure import fetch_policies
-from ensure import run_pod_outside_gs
+from ensure import run_pod_from_registries
 
 import pytest
 from pytest_kube import forward_requests, wait_for_rollout, app_template
@@ -85,7 +85,8 @@ def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
     :param run_pod_outside_gs: Pod with a container from outside GS registries
     """
 
-    found = False
+    bad_registry_found = False
+    good_registry_found = False
 
     if len(run_pod_outside_gs['items']) == 0:
         LOGGER.warning("No policy reports present on the cluster")
@@ -101,12 +102,19 @@ def test_kyverno_policy_reports(run_pod_outside_gs) -> None:
                 for resource in policy_report['resources']:
                     LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
 
-                    if resource['name'] == "nginx-outside-gs-registries":
+                    if resource['name'] == "pod-outside-gs-registries":
                         
                         if policy_report['result'] == "fail":
-                            found = True
+                            bad_registry_found = True
                             break
+                        else:
+                            LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
 
+                    if resource['name'] == "pod-inside-gs-registries":
+                        
+                        if policy_report['result'] == "pass":
+                            good_registry_found = True
+                            break
                         else:
                             LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
 

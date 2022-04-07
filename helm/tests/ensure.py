@@ -786,15 +786,16 @@ def fetch_policies(kubernetes_cluster):
     yield kcp
 
 @pytest.fixture
-def run_pod_outside_gs(kubernetes_cluster):
-    pod_name = "nginx-outside-gs-registries"
+def run_pod_from_registries(kubernetes_cluster):
+    bad_pod_name = "pod-outside-gs-registries"
+    good_pod_name = "pod-inside-gs-registries"
     c = dedent(f"""
         apiVersion: v1
         kind: Pod
         metadata:
           labels:
             cluster.x-k8s.io/cluster-name: {cluster_name}
-          name: {pod_name}
+          name: {bad_pod_name}
           namespace: default
         spec:
           containers:
@@ -803,7 +804,32 @@ def run_pod_outside_gs(kubernetes_cluster):
     """)
 
     kubernetes_cluster.kubectl("apply", input=c, output=None)
-    LOGGER.info(f"Pod {pod_name} applied")
+    LOGGER.info(f"Pod {bad_pod_name} applied")
+
+    c = dedent(f"""
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            cluster.x-k8s.io/cluster-name: {cluster_name}
+          name: {good_pod_name}
+          namespace: default
+        spec:
+          containers:
+          - name: good-registry-quay
+            image: quay.io/giantswarm/nginx
+          - name: good-registry-docker
+            image: docker.io/giantswarm/nginx
+          - name: good-registry-gs
+            image: giantswarm/nginx
+          - name: good-registry-azurecr
+            image: giantswarm.azurecr.io/giantswarm/nginx
+          - name: good-registry-aliyuncs
+            image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/nginx
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=c, output=None)
+    LOGGER.info(f"Pod {good_pod_name} applied")
 
     # Wait for a Polr to be created
     timeout = 0
@@ -825,35 +851,5 @@ def run_pod_outside_gs(kubernetes_cluster):
 
     yield kcp
 
-    kubernetes_cluster.kubectl(f"delete pod {pod_name}", output=None)
-    LOGGER.info(f"Pod {pod_name} deleted")
-
-@pytest.fixture
-def run_pod_inside_gs(kubernetes_cluster):
-    pod_name = "nginx-inside-gs-registries"
-    c = dedent(f"""
-        apiVersion: v1
-        kind: Pod
-        metadata:
-          labels:
-            cluster.x-k8s.io/cluster-name: {cluster_name}
-          name: {pod_name}
-          namespace: default
-        spec:
-          containers:
-          - name: good-registry
-            image: docker.io/giantswarm/nginx
-    """)
-
-    kubernetes_cluster.kubectl("apply", input=c, output=None)
-    LOGGER.info(f"Pod {pod_name} applied")
-
-    raw = kubernetes_cluster.kubectl(
-        f"get polr", output="yaml")
-
-    kcp = yaml.safe_load(raw)
-
-    yield kcp
-
-    kubernetes_cluster.kubectl(f"delete pod {cluster_name}", output=None)
-    LOGGER.info(f"Pod {cluster_name} deleted")
+    kubernetes_cluster.kubectl(f"delete pod {good_pod_name} {bad_pod_name}", output=None)
+    LOGGER.info(f"Pods {good_pod_name}, {bad_pod_name} deleted")
