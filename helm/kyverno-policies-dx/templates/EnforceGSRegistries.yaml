@@ -13,7 +13,7 @@ metadata:
       Images from unknown, public registries can be of dubious quality and may not be
       scanned and secured, representing a high degree of risk. Requiring use of known, approved
       registries helps reduce threat exposure by ensuring image pulls only come from them. This
-      sample validates that container images only originate from the GiantSwarm registries.
+      sample validates that container images only originate from Giant Swarm trusted registries.
 spec:
   validationFailureAction: audit
   background: true
