@@ -82,7 +82,7 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
     """
     test_kyverno_policy_reports tests the restrict-image-registries policy
 
-    :param run_pod_from_registries: Pods with a containers from inside and outside GS registries
+    :param run_pod_from_registries: Pods with containers from inside and outside GS registries
     """
 
     bad_registry_found = False
