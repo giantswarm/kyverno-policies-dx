@@ -21,6 +21,8 @@ from ensure import kubeadm_control_plane
 from ensure import kubeadmconfig_controlplane
 from ensure import kubeadmconfig_with_files
 from ensure import kubeadmconfig_with_audit_file
+from ensure import fetch_policies
+from ensure import run_pod_from_registries
 
 import pytest
 from pytest_kube import forward_requests, wait_for_rollout, app_template
@@ -60,3 +62,62 @@ def test_kubeadmconfig_auditpolicy(kubeadmconfig_with_audit_file) -> None:
     :param kubeadmconfig_with_audit_file: KubeadmConfig CR which includes an existing audit file
     """
     assert len(kubeadmconfig_with_audit_file['spec']['files']) == 1
+
+@pytest.mark.smoke
+def test_kyverno_policy(fetch_policies) -> None:
+    """
+    test_kyverno_policy tests that the policy is present
+    """
+    found = False
+    
+    for policy in fetch_policies['items']:
+        LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
+        if policy['metadata']['name'] == "restrict-image-registries":
+            found = True
+    
+    assert found == True
+
+@pytest.mark.smoke
+def test_kyverno_policy_reports(run_pod_from_registries) -> None:
+    """
+    test_kyverno_policy_reports tests the restrict-image-registries policy
+
+    :param run_pod_from_registries: Pods with containers from inside and outside GS registries
+    """
+
+    bad_registry_found = False
+    good_registry_found = False
+
+    if len(run_pod_from_registries['items']) == 0:
+        LOGGER.warning("No policy reports present on the cluster")
+
+    for report in run_pod_from_registries['items']:
+        LOGGER.info(f"Policy report {report['metadata']['name']} is present on the cluster")
+
+        for policy_report in report['results']:
+
+            # Look for PolicyReports from the `restrict-image-registries` policy
+            if policy_report['policy'] == "restrict-image-registries":
+
+                for resource in policy_report['resources']:
+                    LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
+
+                    # Check for the Pod with bad registries and verify that it has a fail result
+                    if resource['name'] == "pod-outside-gs-registries":
+                        
+                        if policy_report['result'] == "fail":
+                            bad_registry_found = True
+                            break
+                        else:
+                            LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
+
+                    # Check for the Pod with good registries and verify that it has a pass result
+                    if resource['name'] == "pod-inside-gs-registries":
+                        
+                        if policy_report['result'] == "pass":
+                            good_registry_found = True
+                            break
+                        else:
+                            LOGGER.warning(f"PolicyReport for {resource['name']} is present but result is not correct")
+
+    assert (bad_registry_found == True and good_registry_found == True)

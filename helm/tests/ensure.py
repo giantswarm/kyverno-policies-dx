@@ -21,6 +21,7 @@ watch_label = "capi"
 
 # Giant Swarm specific fixtures
 
+
 @pytest.fixture(scope="module")
 def release(kubernetes_cluster):
     r = dedent(f"""
@@ -69,6 +70,7 @@ def release(kubernetes_cluster):
 
 # CAPI Core fixtures
 
+
 @pytest.fixture
 def cluster(kubernetes_cluster):
     c = dedent(f"""
@@ -108,6 +110,7 @@ def cluster(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete cluster {cluster_name}", output=None)
     LOGGER.info(f"Cluster {cluster_name} deleted")
+
 
 @pytest.fixture
 def cluster_v1alpha4(kubernetes_cluster):
@@ -197,6 +200,7 @@ def machinedeployment(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete machinedeployment {cluster_name}", output=None)
     LOGGER.info(f"MachineDeployment {cluster_name} deleted")
 
+
 @pytest.fixture
 def kubeadmconfig(kubernetes_cluster):
     md = dedent(f"""
@@ -222,6 +226,7 @@ def kubeadmconfig(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete kubeadmconfig {cluster_name}", output=None)
     LOGGER.info(f"KubeadmConfig {cluster_name} deleted")
+
 
 @pytest.fixture
 def kubeadmconfig_with_labels(kubernetes_cluster):
@@ -253,6 +258,7 @@ def kubeadmconfig_with_labels(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete kubeadmconfig {cluster_name}", output=None)
     LOGGER.info(f"KubeadmConfig {cluster_name} deleted")
+
 
 @pytest.fixture
 def kubeadmconfig_with_files(kubernetes_cluster):
@@ -287,6 +293,7 @@ def kubeadmconfig_with_files(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete kubeadmconfig {cluster_name}", output=None)
     LOGGER.info(f"KubeadmConfig {cluster_name} deleted")
 
+
 @pytest.fixture
 def kubeadmconfig_with_audit_file(kubernetes_cluster):
     md = dedent(f"""
@@ -320,6 +327,7 @@ def kubeadmconfig_with_audit_file(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete kubeadmconfig {cluster_name}", output=None)
     LOGGER.info(f"KubeadmConfig {cluster_name} deleted")
 
+
 @pytest.fixture
 def kubeadmconfig_with_role_labels(kubernetes_cluster):
     md = dedent(f"""
@@ -350,6 +358,7 @@ def kubeadmconfig_with_role_labels(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete kubeadmconfig {cluster_name}", output=None)
     LOGGER.info(f"KubeadmConfig {cluster_name} deleted")
+
 
 @pytest.fixture
 def kubeadmconfig_with_kubelet_args(kubernetes_cluster):
@@ -413,6 +422,7 @@ def kubeadmconfig_controlplane(kubernetes_cluster):
 
 # CAPA fixtures
 
+
 @pytest.fixture
 def awscluster_v1alpha3(kubernetes_cluster):
     c = dedent(f"""
@@ -442,6 +452,7 @@ def awscluster_v1alpha3(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete awscluster {cluster_name}", output=None)
     LOGGER.info(f"AWSCluster {cluster_name} deleted")
 
+
 @pytest.fixture
 def awscluster_v1alpha3_empty(kubernetes_cluster):
     c = dedent(f"""
@@ -467,6 +478,7 @@ def awscluster_v1alpha3_empty(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete awscluster {cluster_name}", output=None)
     LOGGER.info(f"AWSCluster {cluster_name} deleted")
+
 
 @pytest.fixture
 def awscluster_v1alpha3_empty_labeled(kubernetes_cluster):
@@ -494,6 +506,7 @@ def awscluster_v1alpha3_empty_labeled(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete awscluster {cluster_name}", output=None)
     LOGGER.info(f"AWSCluster {cluster_name} deleted")
+
 
 @pytest.fixture
 def awsmachinetemplate(kubernetes_cluster):
@@ -526,6 +539,7 @@ def awsmachinetemplate(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete AWSMachineTemplate {cluster_name}", output=None)
     LOGGER.info(f"AWSMachineTemplate {cluster_name} deleted")
+
 
 @pytest.fixture
 def awsmachinepool(kubernetes_cluster):
@@ -564,6 +578,7 @@ def awsmachinepool(kubernetes_cluster):
     kubernetes_cluster.kubectl(f"delete AWSMachinePool {cluster_name}", output=None)
     LOGGER.info(f"AWSMachinePool {cluster_name} deleted")
 
+
 @pytest.fixture
 def awsclusterroleidentity(kubernetes_cluster):
     c = dedent(f"""
@@ -598,6 +613,7 @@ def awsclusterroleidentity(kubernetes_cluster):
 
 # CAPZ fixtures
 
+
 @pytest.fixture
 def azurecluster(kubernetes_cluster):
     c = dedent(f"""
@@ -625,6 +641,7 @@ def azurecluster(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete azurecluster {cluster_name}", output=None)
     LOGGER.info(f"AzureCluster {cluster_name} deleted")
+
 
 @pytest.fixture
 def azuremachinepool(kubernetes_cluster):
@@ -671,6 +688,7 @@ def azuremachinepool(kubernetes_cluster):
 
 # Silence fixtures
 
+
 @pytest.fixture
 def silence(kubernetes_cluster):
     c = dedent(f"""
@@ -696,6 +714,7 @@ def silence(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete silence {silence_name}", output=None)
     LOGGER.info(f"Silence {silence_name} deleted")
+
 
 @pytest.fixture
 def silence_with_matchers(kubernetes_cluster):
@@ -726,6 +745,7 @@ def silence_with_matchers(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete silence {silence_name}", output=None)
     LOGGER.info(f"Silence {silence_name} deleted")
+
 
 @pytest.fixture
 def kubeadm_control_plane(kubernetes_cluster):
@@ -773,3 +793,95 @@ def kubeadm_control_plane(kubernetes_cluster):
 
     kubernetes_cluster.kubectl(f"delete kubeadmcontrolplane {cluster_name}", output=None)
     LOGGER.info(f"kubeadmcontrolplane {cluster_name} deleted")
+
+# Kyverno fixtures
+
+
+@pytest.fixture
+def fetch_policies(kubernetes_cluster):
+    raw = kubernetes_cluster.kubectl(
+        f"get cpol", output="yaml")
+
+    kcp = yaml.safe_load(raw)
+
+    yield kcp
+
+
+@pytest.fixture
+def run_pod_from_registries(kubernetes_cluster):
+    bad_pod_name = "pod-outside-gs-registries"
+    good_pod_name = "pod-inside-gs-registries"
+
+    # Create a Pod with a known bad registry
+    c = dedent(f"""
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            cluster.x-k8s.io/cluster-name: {cluster_name}
+          name: {bad_pod_name}
+          namespace: default
+        spec:
+          containers:
+          - name: bad-registry
+            image: docker.io/nginx
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=c, output=None)
+    LOGGER.info(f"Pod {bad_pod_name} applied")
+
+    # Create a Pod with all the known good registries
+    c = dedent(f"""
+        apiVersion: v1
+        kind: Pod
+        metadata:
+          labels:
+            cluster.x-k8s.io/cluster-name: {cluster_name}
+          name: {good_pod_name}
+          namespace: default
+        spec:
+          containers:
+          - name: good-registry-quay
+            image: quay.io/giantswarm/nginx
+          - name: good-registry-docker
+            image: docker.io/giantswarm/nginx
+          - name: good-registry-gs
+            image: giantswarm/nginx
+          - name: good-registry-azurecr
+            image: giantswarm.azurecr.io/giantswarm/nginx
+          - name: good-registry-aliyuncs
+            image: registry-intl.cn-shanghai.aliyuncs.com/giantswarm/nginx
+    """)
+
+    kubernetes_cluster.kubectl("apply", input=c, output=None)
+    LOGGER.info(f"Pod {good_pod_name} applied")
+
+    # Wait for a PolicyReport to be created
+    timeout = 0
+    reports_found = False
+
+    while timeout < 5 and not reports_found:
+        raw = kubernetes_cluster.kubectl(
+            f"get polr", output="yaml")
+
+        polr = yaml.safe_load(raw)
+
+        if len(polr['items']) == 0:
+            time.sleep(15)
+            timeout += 1
+        else:
+            # Check that there is one result for each pod
+            for report in polr['items']:
+                LOGGER.info(f"Report {report['metadata']['name']} has {len(report['results'])} results")
+
+                if len(report['results']) != 2:
+                    time.sleep(15)
+                    timeout += 1
+                else:
+                    reports_found = True
+                    break
+
+    yield polr
+
+    kubernetes_cluster.kubectl(f"delete pod {good_pod_name} {bad_pod_name}", output=None)
+    LOGGER.info(f"Pods {good_pod_name}, {bad_pod_name} deleted")

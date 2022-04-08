@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add `restrict-image-registries` audit policy to ensure images come from trusted Giant Swarm registries.
+
 ## [0.0.1] - 2022-04-01
 
 ### Added
