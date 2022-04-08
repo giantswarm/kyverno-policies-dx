@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
+- Add `restrict-image-registries` audit policy to ensure images come from trusted Giant Swarm registries.
 
 [Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.0.1...HEAD
 [0.0.1]: https://github.com/giantswarm/kyverno-policies-dx/releases/tag/v0.0.1
