@@ -9,9 +9,9 @@ metadata:
     policies.kyverno.io/minversion: 1.3.0
     policies.kyverno.io/subject: Crossplane
     policies.kyverno.io/description: >-
-      TODO
+      Restrict managing certain Crossplane resources to Giant Swarm only
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   background: false
   rules:
     - name: restrict-providers
@@ -19,18 +19,11 @@ spec:
         resources:
           kinds:
             - pkg.crossplane.io/v1/Provider
-#        subjects:
-#          - kind: ServiceAccount
-#            name: kustomize-controller
-#            namespace: flux-giantswarm
       validate:
-        message: "Crossplane providers are only allowed to be created by flux-giantswarm/kustomize-controller"
+        message: "Crossplane providers are only allowed to be managed by subjects in the 'customer:giantswarm:Employees' group"
         deny:
           conditions:
             all:
-              - key: "{{ serviceAccountName }}"
-                operator: NotEquals
-                value: kustomize-controller
-              - key: "{{ serviceAccountNamespace }}"
-                operator: NotEquals
-                value: flux-giantswarm
+              - key: "customer:giantswarm:Employees"
+                operator: In
+                value: "{{ request.userInfo.groups }}"
