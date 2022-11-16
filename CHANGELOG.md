@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-11-16
+
 ### Added
 
 - Add `ClusterPolicy` to allow managing `pkg.crossplane.io/v1/Provider` only to subject in the `customer:giantswarm:Employees` group
@@ -26,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/giantswarm/kyverno-policies-dx/releases/tag/v0.0.1
