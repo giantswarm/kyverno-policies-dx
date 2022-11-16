@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-usage-of-crossplane-crds
+  annotations:
+    policies.kyverno.io/title: Restrict Crossplane CRDs
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.3.0
+    policies.kyverno.io/subject: Crossplane
+    policies.kyverno.io/description: >-
+      Restrict managing certain Crossplane resources to Giant Swarm only
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+    - name: restrict-providers
+      match:
+        resources:
+          kinds:
+            - pkg.crossplane.io/v1/Provider
+      validate:
+        message: "Crossplane providers are only allowed to be managed by subjects in the 'customer:giantswarm:Employees' group"
+        deny:
+          conditions:
+            all:
+              - key: "customer:giantswarm:Employees"
+                operator: In
+                value: "{{ request.userInfo.groups }}"
