@@ -19,11 +19,15 @@ spec:
         resources:
           kinds:
             - pkg.crossplane.io/v1/Provider
+      exclude:
+        all:
+          - clusterRoles:
+              - cluster-admin
       validate:
-        message: "Crossplane providers are only allowed to be managed by subjects in the 'customer:giantswarm:Employees' group"
+        message: "Crossplane providers are only allowed to be managed by subjects in the 'giantswarm:giantswarm:giantswarm-admins' group or with the 'cluster-admin' cluster role"
         deny:
           conditions:
             all:
-              - key: "customer:giantswarm:Employees"
-                operator: In
+              - key: "giantswarm:giantswarm:giantswarm-admins"
+                operator: NotIn
                 value: "{{ request.userInfo.groups }}"
