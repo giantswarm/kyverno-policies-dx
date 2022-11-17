@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `ClusterPolicy` to allow managing `pkg.crossplane.io/v1/Provider` only to subject in the `customer:giantswarm:Employees` group
+- Add `ClusterPolicy` to allow managing `pkg.crossplane.io/v1/Provider` only to subject in the `giantswarm:giantswarm:giantswarm-admins` group or with the `cluster-admin` cluster role
 
 ## [0.1.1] - 2022-08-05
 
