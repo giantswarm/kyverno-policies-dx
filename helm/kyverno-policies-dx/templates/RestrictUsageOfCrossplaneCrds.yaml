@@ -1,4 +1,5 @@
-[[- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" ]]
+# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
+{{- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -31,5 +32,5 @@ spec:
             all:
               - key: "giantswarm:giantswarm:giantswarm-admins"
                 operator: NotIn
-                value: "{{ request.userInfo.groups }}"
-[[- end ]]
+                value: "{{ `{{` }} request.userInfo.groups {{ `}}` }}"
+{{- end }}
