@@ -1,9 +1,10 @@
+[[- if lt (int .Capabilities.KubeVersion.Minor) 22 ]]
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: check-deprecated-apis
+  name: check-deprecated-apis-1-22
   annotations:
-    policies.kyverno.io/title: Check deprecated APIs
+    policies.kyverno.io/title: Check deprecated APIs for kubernetes 1.22
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/subject: Kubernetes APIs
     policies.kyverno.io/description: >-
@@ -47,18 +48,4 @@ spec:
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.22.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
       deny: {}
-  - name: validate-v1-25-removals
-    match:
-      resources:
-        kinds:
-        - batch/v1beta1/CronJob
-        - discovery.k8s.io/v1beta1/EndpointSlice
-        - events.k8s.io/v1beta1/Event
-        - policy/v1beta1/PodDisruptionBudget
-        - policy/v1beta1/PodSecurityPolicy
-        - node.k8s.io/v1beta1/RuntimeClass
-    validate:
-      message: >-
-        {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.25.
-        See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
-      deny: {}
+[[- end ]]
