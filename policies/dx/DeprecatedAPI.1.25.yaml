@@ -1,4 +1,4 @@
-[[- if lt (int .Capabilities.KubeVersion.Minor) 25 ]]
+[[- if semverCompare "<1.25-0" .Capabilities.KubeVersion.GitVersion ]]
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
