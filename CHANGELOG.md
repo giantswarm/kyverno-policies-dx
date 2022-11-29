@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Actually added the `crossplane` checks to the Helm chart
+
+### Changed
+
+- Split deprecated CRD usage checks per kubernetes version and added Helm kubernetes version check condition to them because kyverno fails if those CRDs do not exist anymore (e.g. the cluster was upgraded beyond that version) 
+
 ## [0.2.0] - 2022-11-17
 
 ### Added
