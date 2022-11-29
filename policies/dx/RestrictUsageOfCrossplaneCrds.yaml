@@ -1,3 +1,4 @@
+[[- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" ]]
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -31,3 +32,4 @@ spec:
               - key: "giantswarm:giantswarm:giantswarm-admins"
                 operator: NotIn
                 value: "{{ request.userInfo.groups }}"
+[[- end ]]
