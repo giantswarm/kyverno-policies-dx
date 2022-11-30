@@ -205,3 +205,17 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-kyverno-policies-dx-to-gcp-app-collection
+          context: architect
+          app_name: "kyverno-policies-dx"
+          app_namespace: "giantswarm"
+          app_collection_repo: "gcp-app-collection"
+          requires:
+            - push-kyverno-policies-dx-to-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
