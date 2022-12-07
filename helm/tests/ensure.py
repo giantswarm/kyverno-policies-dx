@@ -820,7 +820,7 @@ def run_pod_from_registries(kubernetes_cluster):
           labels:
             cluster.x-k8s.io/cluster-name: {cluster_name}
           name: {bad_pod_name}
-          namespace: default
+          namespace: giantswarm
         spec:
           containers:
           - name: bad-registry
@@ -838,7 +838,7 @@ def run_pod_from_registries(kubernetes_cluster):
           labels:
             cluster.x-k8s.io/cluster-name: {cluster_name}
           name: {good_pod_name}
-          namespace: default
+          namespace: giantswarm
         spec:
           containers:
           - name: good-registry-quay
@@ -862,7 +862,7 @@ def run_pod_from_registries(kubernetes_cluster):
 
     while timeout < 5 and not reports_found:
         raw = kubernetes_cluster.kubectl(
-            f"get polr", output="yaml")
+            f"get polr -n giantswarm", output="yaml")
 
         polr = yaml.safe_load(raw)
 
@@ -883,5 +883,5 @@ def run_pod_from_registries(kubernetes_cluster):
 
     yield polr
 
-    kubernetes_cluster.kubectl(f"delete pod {good_pod_name} {bad_pod_name}", output=None)
+    kubernetes_cluster.kubectl(f"delete pod -n giantswarm {good_pod_name} {bad_pod_name}", output=None)
     LOGGER.info(f"Pods {good_pod_name}, {bad_pod_name} deleted")
