@@ -26,6 +26,7 @@ spec:
             - Pod
           names:
             - "giantswarm"
+            - "org-giantswarm"
             - "monitoring"
             - "kube-system"
             - "flux-giantswarm"
