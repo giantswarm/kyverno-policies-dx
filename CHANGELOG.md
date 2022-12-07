@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Modified `enforce-gs-registries` policy to only look at GS known namespaces.
+
 ### Added
 
 - Push to `gcp` and `cloud-director` app collection.

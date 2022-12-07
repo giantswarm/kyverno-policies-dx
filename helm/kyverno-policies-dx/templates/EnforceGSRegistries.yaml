@@ -20,9 +20,16 @@ spec:
   rules:
   - name: validate-registries
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+            - Pod
+          names:
+            - "giantswarm"
+            - "monitoring"
+            - "kube-system"
+            - "flux-giantswarm"
+            - "flux-system"
     validate:
       message: >-
         Images must come from a trusted Giant Swarm registry.
