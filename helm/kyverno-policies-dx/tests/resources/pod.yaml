@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  namespace: giantswarm
+spec:
+  containers:
+  - image: docker.io/giantswarm/busybox:latest
+    name: good-pod
+    resources: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  namespace: giantswarm
+spec:
+  containers:
+  - image: busybox:latest
+    name: bad-pod
+    resources: {}
