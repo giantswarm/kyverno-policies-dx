@@ -110,8 +110,8 @@ jobs:
       - run:
           name: Download Kyverno CLI
           command: |
-            curl -sLO https://github.com/kyverno/kyverno/releases/download/${{ env.KYVERNO_VERSION }}/kyverno-cli_${{ env.KYVERNO_VERSION }}_linux_x86_64.tar.gz
-            tar -xf kyverno-cli_${{ env.KYVERNO_VERSION }}_linux_x86_64.tar.gz
+            curl -sLO https://github.com/kyverno/kyverno/releases/download/${KYVERNO_VERSION}/kyverno-cli_${KYVERNO_VERSION}_linux_x86_64.tar.gz
+            tar -xf kyverno-cli_${KYVERNO_VERSION}_linux_x86_64.tar.gz
             ./kyverno version          
       - run:
           name: Run tests
