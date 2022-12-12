@@ -24,7 +24,7 @@ spec:
       - resources:
           kinds:
             - Pod
-          names:
+          namespaces:
             - "giantswarm"
             - "org-giantswarm"
             - "monitoring"
