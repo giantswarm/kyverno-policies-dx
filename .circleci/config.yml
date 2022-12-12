@@ -100,6 +100,23 @@ jobs:
       - store_artifacts:
           path: logs
 
+  kyverno-tests:
+    machine:
+      image: ubuntu-2004:202010-01
+    environment:
+      KYVERNO_VERSION: v1.8.0
+    steps:
+      - checkout
+      - run:
+          name: Download Kyverno CLI
+          command: |
+            curl -sLO https://github.com/kyverno/kyverno/releases/download/${{ env.KYVERNO_VERSION }}/kyverno-cli_${{ env.KYVERNO_VERSION }}_linux_x86_64.tar.gz
+            tar -xf kyverno-cli_${{ env.KYVERNO_VERSION }}_linux_x86_64.tar.gz
+            ./kyverno version          
+      - run:
+          name: Run tests
+          command: ./kyverno test "helm/kyverno-policies-dx/tests"
+
 workflows:
   workflow:
     jobs:
@@ -116,6 +133,12 @@ workflows:
               only: /^v.*/
 
       - test-policies:
+          # Needed to trigger job also on git tag.
+          filters:
+            tags:
+              only: /^v.*/
+
+      - kyverno-tests:
           # Needed to trigger job also on git tag.
           filters:
             tags:
