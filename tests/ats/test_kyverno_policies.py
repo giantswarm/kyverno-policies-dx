@@ -98,3 +98,23 @@ def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
     )
     assert app_version == kyverno_app_version
     logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
+
+@pytest.mark.smoke
+def dummy_test(kube_cluster: Cluster) -> None:
+    """
+    Just check things
+    """
+
+    kube_cluster.kubectl(
+        "get deploy -n kyverno"
+    )
+
+    kube_cluster.kubectl(
+        "get deploy"
+    )
+
+    kube_cluster.kubectl(
+        "get app -A"
+    )
+
+    assert true
