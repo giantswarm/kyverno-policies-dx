@@ -66,6 +66,7 @@ workflows:
           attach_workspace: true
           chart: "kyverno-policies-dx"
           context: "architect"
+          persist_chart_archive: true
           # on_tag: false
           requires:
             - kyverno-tests
