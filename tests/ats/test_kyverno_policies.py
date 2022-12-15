@@ -79,7 +79,7 @@ def test_api_working(kube_cluster: Cluster) -> None:
     assert kube_cluster.kube_client is not None
     assert len(pykube.Node.objects(kube_cluster.kube_client)) >= 1
 
-@pytest.mark.smoke
+@pytest.fixture(scope="module")
 def dummy_test(kube_cluster: Cluster) -> None:
     """
     Just check things
