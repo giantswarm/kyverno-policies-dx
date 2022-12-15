@@ -99,22 +99,22 @@ def dummy_test(kube_cluster: Cluster) -> None:
     assert true
 
 
-@pytest.mark.smoke
-def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
-    """
-    Test if Kyverno is deployed
-    """
-    app_cr = (
-        AppCR.objects(kube_cluster.kube_client)
-        .filter(namespace=kyverno_namespace)
-        .get_by_name(kyverno_app_name)
-    )
-    app_version = app_cr.obj["status"]["version"]
-    wait_for_deployments_to_run(
-        kube_cluster.kube_client,
-        kyverno_app_name,
-        kyverno_namespace,
-        timeout,
-    )
-    assert app_version == kyverno_app_version
-    logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
+# @pytest.mark.smoke
+# def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
+#     """
+#     Test if Kyverno is deployed
+#     """
+#     app_cr = (
+#         AppCR.objects(kube_cluster.kube_client)
+#         .filter(namespace=kyverno_namespace)
+#         .get_by_name(kyverno_app_name)
+#     )
+#     app_version = app_cr.obj["status"]["version"]
+#     wait_for_deployments_to_run(
+#         kube_cluster.kube_client,
+#         kyverno_app_name,
+#         kyverno_namespace,
+#         timeout,
+#     )
+#     assert app_version == kyverno_app_version
+#     logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
