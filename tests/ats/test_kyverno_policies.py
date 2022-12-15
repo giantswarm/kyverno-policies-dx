@@ -79,42 +79,24 @@ def test_api_working(kube_cluster: Cluster) -> None:
     assert kube_cluster.kube_client is not None
     assert len(pykube.Node.objects(kube_cluster.kube_client)) >= 1
 
-@pytest.fixture(scope="module")
-def dummy_test(kube_cluster: Cluster) -> None:
+@pytest.mark.smoke
+def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
     """
-    Just check things
+    Test if Kyverno is deployed
     """
-
-    logger.info(kube_cluster.kubectl(
-        "get deploy -n kyverno"
-    ))
-
-    logger.info(kube_cluster.kubectl(
-        "get deploy"
-    ))
-
-    logger.info(kube_cluster.kubectl(
-        "get app -A"
-    ))
-
-    assert true
-
-# @pytest.mark.smoke
-# def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
-#     """
-#     Test if Kyverno is deployed
-#     """
-#     app_cr = (
-#         AppCR.objects(kube_cluster.kube_client)
-#         .filter(namespace=kyverno_namespace)
-#         .get_by_name(kyverno_app_name)
-#     )
-#     app_version = app_cr.obj["status"]["version"]
-#     wait_for_deployments_to_run(
-#         kube_cluster.kube_client,
-#         kyverno_app_name,
-#         kyverno_namespace,
-#         timeout,
-#     )
-#     assert app_version == kyverno_app_version
-#     logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
+    logger.info("Checking if Kyverno is deployed")
+    logger.info(kube_cluster.kubectl("get deploy -A"))
+    app_cr = (
+        AppCR.objects(kube_cluster.kube_client)
+        .filter(namespace=kyverno_namespace)
+        .get_by_name(kyverno_app_name)
+    )
+    app_version = app_cr.obj["status"]["version"]
+    wait_for_deployments_to_run(
+        kube_cluster.kube_client,
+        ["kyverno"],
+        kyverno_namespace,
+        timeout,
+    )
+    assert app_version == kyverno_app_version
+    logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
