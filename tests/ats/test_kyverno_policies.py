@@ -98,3 +98,24 @@ def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
     )
     assert app_version == kyverno_app_version
     logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
+
+@pytest.mark.smoke
+def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_policies_app_cr: AppCR):
+    """
+    Test if Kyverno Policies are deploy
+    """
+    app_cr = (
+        AppCR.objects(kube_cluster.kube_client)
+        .filter(namespace=kyverno_namespace)
+        .get_by_name(kyverno_app_name)
+    )
+    app_version = app_cr.obj["status"]["version"]
+    wait_for_deployments_to_run(
+        kube_cluster.kube_client,
+        ["kyverno"],
+        kyverno_namespace,
+        timeout,
+    )
+    logger.info(kube_cluster.kubectl("get app -A"))
+    assert app_version == kyverno_app_version
+    logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
