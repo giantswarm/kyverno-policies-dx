@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 timeout: int = 600
 kyverno_app_version = "0.13.0"
 app_catalog_url = "https://giantswarm.github.io/giantswarm-catalog/"
-kyverno_namespace = "kyverno"
+kyverno_namespace = "default"
 kyverno_app_name = "kyverno"
 kyverno_policies_app_name = "kyverno-policies-dx"
 
@@ -84,20 +84,19 @@ def dummy_test(kube_cluster: Cluster) -> None:
     Just check things
     """
 
-    kube_cluster.kubectl(
+    logger.info(kube_cluster.kubectl(
         "get deploy -n kyverno"
-    )
+    ))
 
-    kube_cluster.kubectl(
+    logger.info(kube_cluster.kubectl(
         "get deploy"
-    )
+    ))
 
-    kube_cluster.kubectl(
+    logger.info(kube_cluster.kubectl(
         "get app -A"
-    )
+    ))
 
     assert true
-
 
 # @pytest.mark.smoke
 # def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
