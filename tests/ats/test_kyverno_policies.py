@@ -100,7 +100,7 @@ def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
     logger.info(f"Kyverno App CR shows installed appVersion {app_version}")
 
 @pytest.mark.smoke
-def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_policies_app_cr: AppCR):
+def test_kyverno_app_deployed(kube_cluster: Cluster, chart_version: str, kyverno_policies_app_cr: AppCR):
     """
     Test if Kyverno Policies are deploy
     """
