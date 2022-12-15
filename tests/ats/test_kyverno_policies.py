@@ -110,8 +110,8 @@ def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_policies_app_cr: Ap
         .get_by_name(kyverno_policies_app_name)
     )
     app_version = app_cr.obj["status"]["version"]
-    app_status = app_cr.obj["status"]
-    logger.info(kube_cluster.kubectl("get clusterpolicies"))
+    app_status = app_cr.obj["status"]["release"]["status"]
+    logger.info(kube_cluster.kubectl("get clusterpolicies -o NAME"))
     assert app_status == "deployed"
     assert app_version == chart_version
     logger.info(f"Kyverno Policies App CR shows installed appVersion {app_version}")
