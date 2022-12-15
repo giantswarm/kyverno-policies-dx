@@ -47,6 +47,7 @@ def kyverno_app_cr(
         namespace=kyverno_namespace,
         deployment_namespace=kyverno_namespace,
     )
+    logger.info("Kyverno App CR set")
     return res
 
 
@@ -67,8 +68,8 @@ def kyverno_policies_app_cr(
         namespace="default",
         deployment_namespace="default",
     )
+    logger.info("Kyverno Policies App CR set")
     return res
-
 
 @pytest.mark.smoke
 def test_api_working(kube_cluster: Cluster) -> None:
