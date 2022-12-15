@@ -84,8 +84,6 @@ def test_kyverno_app_deployed(kube_cluster: Cluster, kyverno_app_cr: AppCR):
     """
     Test if Kyverno is deployed
     """
-    logger.info("Checking if Kyverno is deployed")
-    logger.info(kube_cluster.kubectl("get deploy -A"))
     app_cr = (
         AppCR.objects(kube_cluster.kube_client)
         .filter(namespace=kyverno_namespace)
