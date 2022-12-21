@@ -23,13 +23,6 @@ spec:
       - resources:
           kinds:
             - Pod
-          namespaces:
-            - "giantswarm"
-            - "org-giantswarm"
-            - "monitoring"
-            - "kube-system"
-            - "flux-giantswarm"
-            - "flux-system"
     validate:
       message: >-
         Images must come from a trusted Giant Swarm registry.

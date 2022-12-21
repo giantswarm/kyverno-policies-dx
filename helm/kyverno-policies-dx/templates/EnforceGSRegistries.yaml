@@ -15,7 +15,6 @@ metadata:
       registries helps reduce threat exposure by ensuring image pulls only come from them. This
       sample validates that container images only originate from Giant Swarm trusted registries.
 spec:
-  wrongExpectThatDoesntExist: true
   validationFailureAction: audit
   background: true
   rules:
@@ -25,13 +24,6 @@ spec:
       - resources:
           kinds:
             - Pod
-          namespaces:
-            - "giantswarm"
-            - "org-giantswarm"
-            - "monitoring"
-            - "kube-system"
-            - "flux-giantswarm"
-            - "flux-system"
     validate:
       message: >-
         Images must come from a trusted Giant Swarm registry.
