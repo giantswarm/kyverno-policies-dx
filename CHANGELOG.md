@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Push to `gcp` and `cloud-director` app collection.
+- Add `external-secrets` related policies that restrict the usage of `*giantswarm*` namespaces service account for secret stores using the kubernetes provider.
 
 ### Changed
 
