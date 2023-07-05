@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Push to `vsphere` app collection.
 - Don't push to `openstack` app collection.
+- Add policy exception for `kustomize-controller` in `flux-giantswarm` Namespace.
 
 ## [0.4.2] - 2023-02-09
 
@@ -47,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Split deprecated CRD usage checks per kubernetes version and added Helm kubernetes version check condition to them because kyverno fails if those CRDs do not exist anymore (e.g. the cluster was upgraded beyond that version) 
+- Split deprecated CRD usage checks per kubernetes version and added Helm kubernetes version check condition to them because kyverno fails if those CRDs do not exist anymore (e.g. the cluster was upgraded beyond that version)
 
 ## [0.2.0] - 2022-11-17
 
