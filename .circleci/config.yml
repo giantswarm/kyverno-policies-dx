@@ -74,6 +74,7 @@ jobs:
           command: |
             make dabs
       - run-ats:
+          no_output_timeout: 30m
           chart_archive_prefix: "kyverno-policies-dx"
           tests_dir: "helm/kyverno-policies-dx/tests/ats"
       - run:
