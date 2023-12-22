@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-
+- `gsoci.azurecr.io/giantswarm/` registry whitelisted
 - Push to `vsphere` app collection.
 - Don't push to `openstack` app collection.
 - Add policy exception for `kustomize-controller` in `flux-giantswarm` Namespace.
