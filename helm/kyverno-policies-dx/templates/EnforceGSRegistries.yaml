@@ -29,4 +29,4 @@ spec:
       pattern:
         spec:
           containers:
-          - image: "quay.io/giantswarm/* | docker.io/giantswarm/* | giantswarm/* | giantswarm.azurecr.io/giantswarm/* | giantswarm-registry.cn-shanghai.cr.aliyuncs.com/giantswarm/* | gsoci.azurecr.io/giantswarm/*"
+          - image: "quay.io/giantswarm/* | docker.io/giantswarm/* | giantswarm/* | giantswarm.azurecr.io/giantswarm/* | giantswarm-registry.cn-shanghai.cr.aliyuncs.com/giantswarm/* | gsoci.azurecr.io/giantswarm/* | gsociprivate.azurecr.io/giantswarm/*"
