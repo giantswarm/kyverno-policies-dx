@@ -93,7 +93,7 @@ workflows:
           context: "architect"
           # on_tag: false
           requires:
-            - test-policies
+            - verify
           # Needed to trigger job also on git tag.
           filters:
             tags:
