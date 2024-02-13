@@ -851,6 +851,10 @@ def run_pod_from_registries(kubernetes_cluster):
             image: giantswarm.azurecr.io/giantswarm/nginx
           - name: good-registry-aliyuncs
             image: giantswarm-registry.cn-shanghai.cr.aliyuncs.com/giantswarm/nginx
+          - name: good-registry-gsoci-azurecr
+            image: gsoci.azurecr.io/giantswarm/nginx
+          - name: good-registry-private-gsoci-azurecr
+            image: gsociprivate.azurecr.io/giantswarm/nginx
     """)
 
     kubernetes_cluster.kubectl("apply", input=c, output=None)

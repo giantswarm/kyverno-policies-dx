@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Push to `vsphere` app collection.
 - Don't push to `openstack` app collection.
 - Add policy exception for `kustomize-controller` in `flux-giantswarm` Namespace.
-- Added the new registry "gsoci.azurecr.io/giantswarm/" to kyverno-policy enforcing registries.
+- Added the new registry `gsoci.azurecr.io/giantswarm/*` and `gsociprivate.azurecr.io/giantswarm/*`to kyverno-policy enforcing registries.
 
 ## [0.4.2] - 2023-02-09
 
