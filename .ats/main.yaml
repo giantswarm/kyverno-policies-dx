@@ -1,8 +1,7 @@
 smoke-tests-cluster-type: external
 functional-tests-cluster-type: external
-external-cluster-kubeconfig-path: kube.config
+upgrade-tests-cluster-type: external
+external-cluster-kubeconfig-path: /ats/workdir/kube.config
 external-cluster-type: kind
 external-cluster-version: v1.21.1
 skip-steps: [functional, upgrade]
-upgrade-tests-cluster-type: kind
-upgrade-tests-app-catalog-url: https://giantswarm.github.io/giantswarm-catalog/
