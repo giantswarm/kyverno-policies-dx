@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.5] - 2024-03-18
+
 ### Removed
 
 - Removed `check-deprecated-apis-1-22/25` policies since the CRDs are not present anymore.
@@ -84,7 +86,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.4...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.5...HEAD
+[0.4.5]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.1...v0.4.2
