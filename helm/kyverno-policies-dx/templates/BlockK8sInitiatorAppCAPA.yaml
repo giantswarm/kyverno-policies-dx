@@ -1,0 +1,26 @@
+# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
+{{- if eq .provider.kind "capa" }}
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-k8s-initiator-app-deployment-capa
+spec:
+  background: true
+  failurePolicy: Fail
+  rules:
+    - match:
+        any:
+          - resources:
+              kinds:
+                - App
+      name: block-k8s-initiator-app-deployment-capa
+      validate:
+        message: K8s initiator app is not supported on CAPA.
+        deny:
+          conditions:
+          - key: "{{ `{{` }}request.object.spec.name{{ `}}` }}"
+            operator: Equals
+            value: "k8s-initiator-app"
+  validationFailureAction: enforce
+{{- end }}
