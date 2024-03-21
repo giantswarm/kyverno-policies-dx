@@ -8,3 +8,5 @@ Installation:
           ImagePullProgressDeadline: 10m
 
 clusterDescription: "Unnamed Cluster"
+provider:
+  kind: capa
