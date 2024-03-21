@@ -1,4 +1,5 @@
-[[- if and ( .Values.provider ) ( eq .Values.provider.kind "capa" ) ]]
+[[- if .Values.provider  ]]
+[[- if  eq .Values.provider.kind "capa"  ]]
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -22,4 +23,5 @@ spec:
             operator: Equals
             value: "k8s-initiator-app"
   validationFailureAction: enforce
+[[- end ]]
 [[- end ]]
