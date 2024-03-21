@@ -16,8 +16,10 @@ spec:
       name: block-k8s-initiator-app-deployment-capa
       validate:
         message: K8s initiator app is not supported on CAPA.
-        pattern:
-          spec:
-            name: "k8s-initiator-app"
+        deny:
+          conditions:
+          - key: "{{request.object.spec.name}}"
+            operator: Equals
+            value: "k8s-initiator-app"
   validationFailureAction: enforce
 [[- end ]]
