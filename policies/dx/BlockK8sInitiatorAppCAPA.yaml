@@ -1,4 +1,4 @@
-[[- if eq .provider.kind "capa" ]]
+[[- if eq .Values.provider.kind "capa" ]]
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
