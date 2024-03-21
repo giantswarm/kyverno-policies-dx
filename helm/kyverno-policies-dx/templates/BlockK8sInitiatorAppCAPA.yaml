@@ -1,5 +1,5 @@
 # THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
-{{- if eq .Values.provider.kind "capa" }}
+{{- if and ( .Values.provider.kind ) ( eq .Values.provider.kind "capa" ) }}
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
