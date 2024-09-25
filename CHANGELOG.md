@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2024-09-25
+
 ### Changed
 
 - Use `Enforce` and `Audit` validationFailureAction.
@@ -96,7 +98,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.5...v0.5.0
 [0.4.5]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.4...v0.4.5
 [0.4.4]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.4.3...v0.4.4
