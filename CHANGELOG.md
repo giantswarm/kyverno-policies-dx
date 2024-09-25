@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Use `Enforce` and `Audit` validationFailureAction.
+
 ### Removed
 
 - Removed `check-deprecated-apis-1-22/25` policies since the CRDs are not present anymore.
