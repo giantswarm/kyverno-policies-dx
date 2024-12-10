@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "Installation": {
+            "type": "object",
+            "properties": {
+                "V1": {
+                    "type": "object",
+                    "properties": {
+                        "Guest": {
+                            "type": "object",
+                            "properties": {
+                                "Kubernetes": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Kubelet": {
+                                            "type": "object",
+                                            "properties": {
+                                                "ImagePullProgressDeadline": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "Proxy": {
+                            "type": "object",
+                            "properties": {
+                                "Enabled": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "clusterDescription": {
+            "type": "string"
+        }
+    }
+}
