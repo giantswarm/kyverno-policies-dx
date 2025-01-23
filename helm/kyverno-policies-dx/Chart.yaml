@@ -1,10 +1,15 @@
-apiVersion: v1
+apiVersion: v2
 name: kyverno-policies-dx
-appVersion: master
 description: Giant Swarm policies for DX management.
 home: https://github.com/giantswarm/kyverno-policies-dx
+version: 0.0.1-dev
+appVersion: 0.0.1-dev
+icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
 annotations:
   application.giantswarm.io/team: "honeybadger"
   config.giantswarm.io/version: 1.x.x
-version: [[ .Version ]]
-icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
+  ui.giantswarm.io/logo: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
+restrictions:
+  clusterSingleton: true
+  fixedNamespace: kube-system
+  gpuInstances: false
