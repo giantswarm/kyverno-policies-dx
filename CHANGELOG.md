@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Use `Enforce` instead of `enforce` validationFailureAction.
+
 ## [0.5.1] - 2024-09-25
 
 ### Changed

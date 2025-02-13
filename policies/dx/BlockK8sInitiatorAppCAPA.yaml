@@ -22,6 +22,6 @@ spec:
           - key: "{{request.object.spec.name}}"
             operator: Equals
             value: "k8s-initiator-app"
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
 [[- end ]]
 [[- end ]]
