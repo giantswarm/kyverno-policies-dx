@@ -7,6 +7,7 @@ import time
 import random
 import string
 import ensure
+import kubernetes_cluster
 from textwrap import dedent
 
 from ensure import release
