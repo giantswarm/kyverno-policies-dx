@@ -176,7 +176,7 @@ def machinedeployment(kube_cluster: Cluster):
             spec:
               bootstrap:
                 configRef:
-                  apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+                  apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
                   kind: KubeadmConfigTemplate
                   name: {cluster_name}
               clusterName: {cluster_name}
@@ -231,7 +231,7 @@ def kubeadmconfig(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_labels(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -263,7 +263,7 @@ def kubeadmconfig_with_labels(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_files(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -297,7 +297,7 @@ def kubeadmconfig_with_files(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_audit_file(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -331,7 +331,7 @@ def kubeadmconfig_with_audit_file(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_role_labels(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -363,7 +363,7 @@ def kubeadmconfig_with_role_labels(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_with_kubelet_args(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
@@ -396,7 +396,7 @@ def kubeadmconfig_with_kubelet_args(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig_controlplane(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
