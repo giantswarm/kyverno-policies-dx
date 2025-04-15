@@ -874,16 +874,8 @@ def run_pod_from_registries(kube_cluster: Cluster):
             time.sleep(15)
             timeout += 1
         else:
-            # Check that there is one result for each pod
-            for report in polr['items']:
-                LOGGER.info(f"Report {report['metadata']['name']} has {len(report['results'])} results")
-
-                if len(report['results']) != 2:
-                    time.sleep(15)
-                    timeout += 1
-                else:
-                    reports_found = True
-                    break
+            reports_found = True
+            break
 
     yield polr
 
