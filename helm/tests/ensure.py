@@ -6,6 +6,7 @@ import string
 from textwrap import dedent
 
 import pytest
+import kubernetes_cluster
 
 import logging
 LOGGER = logging.getLogger(__name__)
