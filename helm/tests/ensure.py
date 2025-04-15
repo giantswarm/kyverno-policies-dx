@@ -204,7 +204,7 @@ def machinedeployment(kube_cluster: Cluster):
 @pytest.fixture
 def kubeadmconfig(kube_cluster: Cluster):
     md = dedent(f"""
-        apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+        apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
         kind: KubeadmConfig
         metadata:
           name: {cluster_name}
