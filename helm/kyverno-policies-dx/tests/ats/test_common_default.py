@@ -25,8 +25,6 @@ from ensure import fetch_policies
 from ensure import run_pod_from_registries
 
 import pytest
-from pytest_kube import forward_requests, wait_for_rollout, app_template
-
 import logging
 LOGGER = logging.getLogger(__name__)
 
@@ -69,12 +67,12 @@ def test_kyverno_policy(fetch_policies) -> None:
     test_kyverno_policy tests that the policy is present
     """
     found = False
-    
+
     for policy in fetch_policies['items']:
         LOGGER.info(f"Policy {policy['metadata']['name']} is present in the cluster")
         if policy['metadata']['name'] == "restrict-image-registries":
             found = True
-    
+
     assert found == True
 
 @pytest.mark.smoke
@@ -104,7 +102,7 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
 
                     # Check for the Pod with bad registries and verify that it has a fail result
                     if resource['name'] == "pod-outside-gs-registries":
-                        
+
                         if policy_report['result'] == "fail":
                             bad_registry_found = True
                             break
@@ -113,7 +111,7 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
 
                     # Check for the Pod with good registries and verify that it has a pass result
                     if resource['name'] == "pod-inside-gs-registries":
-                        
+
                         if policy_report['result'] == "pass":
                             good_registry_found = True
                             break
