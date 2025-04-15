@@ -6,7 +6,6 @@ import string
 from textwrap import dedent
 
 import pytest
-from pytest_kube import forward_requests, wait_for_rollout, app_template
 
 import logging
 LOGGER = logging.getLogger(__name__)
