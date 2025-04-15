@@ -97,6 +97,7 @@ def test_kyverno_policy_reports(run_pod_from_registries) -> None:
             # Look for PolicyReports from the `restrict-image-registries` policy
             if policy_report['policy'] == "restrict-image-registries":
 
+                print(policy_report)
                 for resource in policy_report['resources']:
                     LOGGER.info(f"PolicyReport for Policy {policy_report['policy']} for resource {resource['name']} is present on the cluster")
 
