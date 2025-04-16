@@ -8,7 +8,7 @@ commands:
     parameters:
       ats_version:
         type: string
-        default: 0.1.4
+        default: 0.10.3
       chart_archive_prefix:
         type: string
       tests_dir:
@@ -40,9 +40,9 @@ jobs:
     machine:
       image: ubuntu-2204:2024.08.1
     environment:
-      KIND_VERSION: v0.19.0
-      KUBERNETES_VERSION: v1.24.7
-      DABS_VERSION: v1.0.4
+      KIND_VERSION: v0.27.0
+      KUBERNETES_VERSION: v1.25.16
+      DABS_VERSION: v1.2.8
     steps:
     - checkout
     - run:
@@ -52,7 +52,7 @@ jobs:
           curl -sLO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl && chmod +x kubectl  && sudo mv kubectl /usr/bin
           wget -O dabs.sh https://github.com/giantswarm/app-build-suite/releases/download/$DABS_VERSION/dabs.sh && chmod +x dabs.sh && sudo mv dabs.sh /usr/bin
           sudo apt-get update && sudo apt-get install make --no-install-recommends
-          curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.3.3/clusterctl-linux-amd64 -o clusterctl && chmod +x clusterctl  && sudo mv clusterctl /usr/bin      
+          curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.3.3/clusterctl-linux-amd64 -o clusterctl && chmod +x clusterctl  && sudo mv clusterctl /usr/bin
     - run:
         name: Install policies in kind cluster
         command: |
