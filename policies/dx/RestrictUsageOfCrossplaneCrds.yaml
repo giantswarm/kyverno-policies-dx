@@ -32,4 +32,23 @@ spec:
               - key: "giantswarm:giantswarm:giantswarm-admins"
                 operator: NotIn
                 value: "{{ request.userInfo.groups }}"
+---
+# https://github.com/giantswarm/giantswarm/issues/33418
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application.giantswarm.io/team: honeybadger
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+  name: kyverno:gs-dx:restrict-usage-of-crossplane-crds
+rules:
+- apiGroups:
+  - clusterctl.cluster.x-k8s.io
+  resources:
+  - providers
+  verbs:
+  - get
+  - list
+  - watch
 [[- end ]]
