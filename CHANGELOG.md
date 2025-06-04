@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Cluster roles required by changes to kyverno: issue-33418
+
 ### Changed
 
 - Update tests to newer runners.
