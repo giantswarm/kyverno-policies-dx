@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2025-08-19
+
 ### Added
 
 - ClusteRole and ClusterPolicy for dex to restart on secret configuration changes
@@ -118,7 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.5.0...v0.5.1
