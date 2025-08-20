@@ -36,7 +36,7 @@ tilt-up: ## Start Tilt
 .PHONY: install-kyverno
 install-kyverno:
 	kubectl create --context kind-$(KIND_CLUSTER_NAME) -f https://github.com/kyverno/kyverno/releases/download/v1.14.4/install.yaml
-	kubectl wait --context kind-$(KIND_CLUSTER_NAME) --for=condition=ready pod -l app.kubernetes.io/instance=kyverno -nkyverno
+	kubectl wait --context kind-$(KIND_CLUSTER_NAME) --for=condition=ready pod -l app.kubernetes.io/instance=kyverno -nkyverno --timeout=240s
 
 .PHONY: kind-get-kubeconfig
 kind-get-kubeconfig:
