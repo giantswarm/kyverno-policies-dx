@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.0] - 2025-08-25
+
+### Added
+
+- Add `enforce-fallback-config-scaledobjects` ClusterPolicy.
+
 ## [0.7.2] - 2025-08-20
 
 ### Changed
@@ -17,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `enforce-fallback-config-scaledobjects` ClusterPolicy.
 - ClusteRole and ClusterPolicy for dex to restart on secret configuration changes
 
 ## [0.7.0] - 2025-06-05
@@ -127,7 +132,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial policies moved from [`kyverno-policies`](https://github.com/giantswarm/kyverno-policies).
 - Push to AWS, KVM, and OpenStack collections.
 
-[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.2...HEAD
+[Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.6.0...v0.7.0
