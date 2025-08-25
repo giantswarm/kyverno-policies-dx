@@ -4,7 +4,6 @@
 kubectl create --context kind-kyverno-cluster -f https://raw.githubusercontent.com/giantswarm/apiextensions/15836a106059cc8d201e1237adf44aec340bbab6/helm/crds-common/templates/giantswarm.yaml
 
 # KEDA CRDs for policy testing
-kubectl create --context kind-kyverno-cluster -f https://github.com/kedacore/keda/releases/download/v2.16.1/keda-2.16.1-core.yaml || \
 kubectl create --context kind-kyverno-cluster -f https://github.com/kedacore/keda/releases/download/v2.16.1/keda-2.16.1.yaml
 
 # Wait for KEDA CRDs to be established
