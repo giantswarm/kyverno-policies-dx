@@ -1,0 +1,44 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-fallback-config-scaledobjects
+  annotations:
+    policies.kyverno.io/title: Enforce Fallback config for ScaledObjects
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.3.0
+    policies.kyverno.io/subject: ScaledObject
+    policies.kyverno.io/description: >-
+      ScaledObjects with prometheus or loki triggers should have a fallback configuration to ensure 
+      that they can handle cases where these metric-based scalers aren't working in a predictable way. 
+      The fallback section defines a number of replicas to fall back to if a scaler is in an error state.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+  - name: check-fallback-config
+    match:
+      any:
+      - resources:
+          kinds:
+          - keda.sh/v1alpha1/ScaledObject
+    preconditions:
+      any:
+      - key: "{{ request.object.spec.triggers[?type == 'prometheus'] | length(@) }}"
+        operator: GreaterThanOrEquals
+        value: 1
+      - key: "{{ request.object.spec.triggers[?type == 'loki'] | length(@) }}"
+        operator: GreaterThanOrEquals
+        value: 1
+    validate:
+      message: >-
+        ScaledObjects with prometheus or loki triggers must have a fallback config defined. 
+        The fallback section should include both failureThreshold and replicas fields to ensure 
+        reliable scaling behavior when these metric-based scalers encounter errors.
+        See the related doc for more information: 
+        https://intranet.giantswarm.io/docs/observability/horizontal-autoscaling/#mandatory-fallback-config
+      pattern:
+        spec:
+          fallback:
+            failureThreshold: "?*"
+            replicas: "?*"
