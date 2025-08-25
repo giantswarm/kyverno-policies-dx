@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.8.0] - 2025-08-25
 
+### Added
+
+- Add `enforce-fallback-config-scaledobjects` ClusterPolicy.
+
 ## [0.7.2] - 2025-08-20
 
 ### Changed
@@ -19,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add `enforce-fallback-config-scaledobjects` ClusterPolicy.
 - ClusteRole and ClusterPolicy for dex to restart on secret configuration changes
 
 ## [0.7.0] - 2025-06-05
