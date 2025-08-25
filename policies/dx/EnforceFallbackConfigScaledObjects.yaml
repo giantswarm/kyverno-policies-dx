@@ -35,6 +35,8 @@ spec:
         ScaledObjects with prometheus or loki triggers must have a fallback config defined. 
         The fallback section should include both failureThreshold and replicas fields to ensure 
         reliable scaling behavior when these metric-based scalers encounter errors.
+        See the related doc for more information: 
+        https://intranet.giantswarm.io/docs/observability/horizontal-autoscaling/#mandatory-fallback-config
       pattern:
         spec:
           fallback:
