@@ -14,7 +14,7 @@ metadata:
       that they can handle cases where these metric-based scalers aren't working in a predictable way. 
       The fallback section defines a number of replicas to fall back to if a scaler is in an error state.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: Enforce
   background: true
   rules:
   - name: check-fallback-config
