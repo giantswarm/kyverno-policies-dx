@@ -1,0 +1,95 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: sync-secrets
+  annotations:
+    policies.kyverno.io/title: Sync Secrets
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Secret
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      Secrets like registry credentials often need to exist in multiple
+      Namespaces so Pods there have access. Manually duplicating those Secrets
+      is time consuming and error prone. This policy will copy a
+      Secret called `regcred` which exists in the `default` Namespace to
+      new Namespaces when they are created. It will also push updates to
+      the copied Secrets should the source Secret be changed.      
+spec:
+  rules:
+  - name: sync-image-pull-secret
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    generate:
+      apiVersion: v1
+      kind: Secret
+      name: regcred
+      namespace: "{{request.object.metadata.name}}"
+      synchronize: true
+      clone:
+        namespace: default
+        name: regcred
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: inject-globals-configmap-hr
+  annotations:
+    policies.kyverno.io/Restrict Image Registriestitle: Inject the Installation Globals CM into HelmRelease
+    policies.kyverno.io/category: Configuration Defaulting
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 3.3.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Apps running in Giant Swarm installations need some global configuration values, like which registry should
+      they use for fetching images. We store that kind of values in the global config map, so each HR has to reference
+      it. This rule sets it automatically when not already listed in a HelmRelease's spec.
+spec:
+  background: true
+  rules:
+  - name: inject-configmap-to-helmrelease
+    match:
+      any:
+      - resources:
+          kinds:
+          - HelmRelease
+          namespaces:
+          - org-piontec
+    preconditions:
+      all:
+      # Only if the ConfigMap 'installation-default' is NOT already in valuesFrom - the number of such entries is 0
+      - key: "{{ request.object.spec.valuesFrom[?kind == 'ConfigMap' && name == 'installation-default'] | length(@) }}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: "/spec/valuesFrom/0"
+          value:
+            kind: ConfigMap
+            name: installation-default
+  - name: inject-configmap-to-app
+    match:
+      any:
+      - resources:
+          kinds:
+          - App
+          namespaces:
+          - org-piontec
+    preconditions:
+      all:
+      # Only if the ConfigMap 'installation-default' is NOT already in valuesFrom - the number of such entries is 0
+      - key: "{{ request.object.spec.extraConfigs[?name == 'installation-default' && namespace == 'giantswarm'] | length(@) }}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchesJson6902: |-
+        - op: add
+          path: "/spec/extraConfigs/0"
+          value:
+            kind: ConfigMap
+            name: installation-default
+            namespace: giantswarm
+            priority: 0
