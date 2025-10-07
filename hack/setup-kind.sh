@@ -19,6 +19,6 @@ export AZURE_CLIENT_ID_B64="${MOCK_CREDENTIALS}"
 export AZURE_CLIENT_SECRET_B64="${MOCK_CREDENTIALS}"
 
 export EXP_MACHINE_POOL="true"
-clusterctl init --core cluster-api:v1.11.1 --bootstrap kubeadm:v1.11.1 --control-plane kubeadm:v1.11.1 --infrastructure=aws:v2.0.2,azure:v1.7.0
+clusterctl init --infrastructure=aws:v2.0.2,azure:v1.7.0
 kubectl wait --for=condition=ready --timeout=90s pod -lcluster.x-k8s.io/provider=infrastructure-aws -A
 kubectl wait --for=condition=ready --timeout=90s pod -lcluster.x-k8s.io/provider=infrastructure-azure -A
