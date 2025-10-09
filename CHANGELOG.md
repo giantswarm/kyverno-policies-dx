@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add `restart-teleport-on-secrets-change` ClusterPolicy to automatically restart teleport-kube-agent pods when credentials are renewed in the `teleport-kube-agent-join-token` secret.
-- Add `cleanup-teleport-state-secrets` CleanupPolicy to delete stale teleport-kube-agent state secrets when ConfigMap configuration changes.
 
 ## [0.8.0] - 2025-08-25
 
