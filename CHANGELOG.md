@@ -7,10 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-
-- Add `restart-teleport-on-secrets-change` ClusterPolicy to automatically restart teleport-kube-agent pods when teleport-operator renews credentials.
-
 ## [0.8.0] - 2025-08-25
 
 ### Added
