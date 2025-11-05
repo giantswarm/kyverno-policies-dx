@@ -32,6 +32,7 @@ metadata:
   labels:
     application.giantswarm.io/team: honeybadger
     rbac.kyverno.io/aggregate-to-admission-controller: "true"
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
   name: kyverno:gs-dx:block-k8s-initiator-app-deployment-capa
 rules:
 - apiGroups:
