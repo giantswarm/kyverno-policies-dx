@@ -46,7 +46,7 @@ metadata:
   name: kyverno:gs-dx:restrict-usage-of-crossplane-crds
 rules:
 - apiGroups:
-  - clusterctl.cluster.x-k8s.io
+  - pkg.crossplane.io
   resources:
   - providers
   verbs:
