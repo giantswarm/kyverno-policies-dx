@@ -43,3 +43,20 @@ spec:
           fallback:
             failureThreshold: "?*"
             replicas: "?*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application.giantswarm.io/team: honeybadger
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+  name: kyverno:gs-dx:enforce-fallback-config-scaledobjects
+rules:
+- apiGroups:
+  - keda.sh
+  resources:
+  - scaledobjects
+  verbs:
+  - get
+  - list
+  - watch
