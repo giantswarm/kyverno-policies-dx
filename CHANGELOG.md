@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Removed `restart-dex-on-secrets-change` policy.
+
 ### Fixed
 
 - Missing RBAC for kyverno-report-controller
