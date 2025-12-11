@@ -10,7 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Migrate Chart.yaml annotations to new format as per https://docs.giantswarm.io/reference/platform-api/chart-metadata/
-
 ## [0.8.1] - 2025-11-26
 
 ### Changed
@@ -147,7 +146,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Push to AWS, KVM, and OpenStack collections.
 
 [Unreleased]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.8.1...HEAD
-
 [0.8.1]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/giantswarm/kyverno-policies-dx/compare/v0.7.1...v0.7.2
