@@ -1,10 +1,10 @@
-apiVersion: v1
+apiVersion: v2
 name: kyverno-policies-dx
 appVersion: master
 description: Giant Swarm policies for DX management.
 home: https://github.com/giantswarm/kyverno-policies-dx
 annotations:
-  application.giantswarm.io/team: "honeybadger"
-  config.giantswarm.io/version: 1.x.x
-version: [[ .Version ]]
+  io.giantswarm.application.team: honeybadger
+version:
+- - .Version
 icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
