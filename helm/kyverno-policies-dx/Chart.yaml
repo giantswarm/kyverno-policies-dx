@@ -6,5 +6,5 @@ home: https://github.com/giantswarm/kyverno-policies-dx
 annotations:
   application.giantswarm.io/team: "honeybadger"
   config.giantswarm.io/version: 1.x.x
-version: [[ .Version ]]
+version: 0.8.2-dev
 icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg

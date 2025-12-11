@@ -90,6 +90,7 @@ workflows:
         app_catalog_test: control-plane-test-catalog
         attach_workspace: true
         chart: kyverno-policies-dx
+        executor: app-build-suite
         context: architect
           # on_tag: false
         requires:
