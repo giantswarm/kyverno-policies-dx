@@ -5,5 +5,5 @@ description: Giant Swarm policies for DX management.
 home: https://github.com/giantswarm/kyverno-policies-dx
 annotations:
   io.giantswarm.application.team: honeybadger
-version: 0.8.2
+version: 0.8.3
 icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
