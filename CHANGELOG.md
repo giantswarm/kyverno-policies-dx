@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Migrate build system to ABS.
+
 ## [0.8.1] - 2025-11-26
 
 ### Changed
