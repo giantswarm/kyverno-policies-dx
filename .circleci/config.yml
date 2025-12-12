@@ -42,7 +42,7 @@ jobs:
     environment:
       KIND_VERSION: v0.27.0
       KUBERNETES_VERSION: v1.25.16
-      DABS_VERSION: v1.2.8
+      DABS_VERSION: v1.4.3
     steps:
     - checkout
     - run:
