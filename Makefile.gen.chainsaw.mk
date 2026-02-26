@@ -15,7 +15,7 @@ KIND_CLUSTER_NAME ?= chainsaw-kyverno-cluster
 KUBERNETES_VERSION: v1.33.7
 # repository: giantswarm/kyverno-crds
 KYVERNO_VERSION: v1.16.0
-KYVERNO_POLICIES_APP_NAME ?= "kyverno-policies"
+KYVERNO_POLICIES_APP_NAME ?= "kyverno-policies-dx"
 
 ##@ Test
 
