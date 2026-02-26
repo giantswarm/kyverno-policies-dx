@@ -1,0 +1,107 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-usage-of-crossplane-crds
+spec:
+  steps:
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-usage-of-crossplane-crds
+
+  # Set up a ServiceAccount with Provider create permissions but without cluster-admin.
+  # This is used to test the deny case via impersonation.
+  - name: setup-test-serviceaccount
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: crossplane-test-sa
+            namespace: default
+    - apply:
+        resource:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          metadata:
+            name: crossplane-provider-creator
+          rules:
+          - apiGroups:
+            - pkg.crossplane.io
+            resources:
+            - providers
+            verbs:
+            - get
+            - list
+            - watch
+            - create
+            - update
+            - patch
+            - delete
+    - apply:
+        resource:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          metadata:
+            name: crossplane-test-sa-provider-creator
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: crossplane-provider-creator
+          subjects:
+          - kind: ServiceAccount
+            name: crossplane-test-sa
+            namespace: default
+
+  # The test runner uses cluster-admin kubeconfig, which is excluded by the policy.
+  - name: allow-provider-as-cluster-admin
+    try:
+    - apply:
+        resource:
+          apiVersion: pkg.crossplane.io/v1
+          kind: Provider
+          metadata:
+            name: provider-aws-admin
+          spec:
+            package: xpkg.upbound.io/upbound/provider-aws:v0.18.0
+
+  # Impersonate a non-admin ServiceAccount (not in giantswarm:giantswarm:giantswarm-admins group).
+  # The policy should deny the request.
+  - name: deny-provider-as-non-admin
+    try:
+    - script:
+        content: |
+          if kubectl apply --as=system:serviceaccount:default:crossplane-test-sa -f - <<'EOF'
+          apiVersion: pkg.crossplane.io/v1
+          kind: Provider
+          metadata:
+            name: provider-aws-denied
+          spec:
+            package: xpkg.upbound.io/upbound/provider-aws:v0.18.0
+          EOF
+          then
+            echo "ERROR: Expected Kyverno to deny this request but it was allowed"
+            exit 1
+          fi
+
+  - name: cleanup-cluster-scoped-resources
+    try:
+    - delete:
+        ref:
+          apiVersion: pkg.crossplane.io/v1
+          kind: Provider
+          name: provider-aws-admin
+    - delete:
+        ref:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRoleBinding
+          name: crossplane-test-sa-provider-creator
+    - delete:
+        ref:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          name: crossplane-provider-creator
