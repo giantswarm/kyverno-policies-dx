@@ -20,3 +20,4 @@ clean: ## Delete test manifests from kind cluster.
 .PHONY: dabs
 dabs: generate
 	dabs.sh --generate-metadata --chart-dir helm/kyverno-policies-dx
+	
