@@ -1,15 +1,53 @@
-# Example of how to check if a Policy is ready using templates
-# Note: The policy needs to already exist in the test cluster.
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   name: check-policy-is-ready
 spec:
   steps:
-  - name: check if policy is ready
+  - name: check-block-k8s-initiator-app-deployment-capa
     use:
       template: ../_steps-templates/cluster-policy-ready.yaml
       with:
         bindings:
         - name: name
-          value: my-policy-name
+          value: block-k8s-initiator-app-deployment-capa
+
+  - name: check-enforce-fallback-config-scaledobjects
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: enforce-fallback-config-scaledobjects
+
+  - name: check-restrict-external-secrets-secret-store-service-accounts
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-external-secrets-secret-store-service-accounts
+
+  - name: check-restrict-external-secrets-cluster-secret-store-service-accounts
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-external-secrets-cluster-secret-store-service-accounts
+
+  - name: check-restrict-image-registries
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-image-registries
+
+  - name: check-restrict-usage-of-crossplane-crds
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-usage-of-crossplane-crds
