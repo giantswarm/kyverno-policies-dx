@@ -1,25 +1,7 @@
 version: 2.1
 
 orbs:
-  architect: giantswarm/architect@6.12.0
-
-commands:
-  run-ats:
-    parameters:
-      ats_version:
-        type: string
-        default: 0.10.3
-      chart_archive_prefix:
-        type: string
-      tests_dir:
-        type: string
-    steps:
-    - architect/run-tests-with-ats:
-        chart_archive_prefix: << parameters.chart_archive_prefix >>
-        app-test-suite_version: v<< parameters.ats_version >>
-        app-test-suite_container_tag: << parameters.ats_version >>
-        additional_app-test-suite_flags: --external-cluster-version $KUBERNETES_VERSION
-          --app-tests-pytest-tests-dir << parameters.tests_dir >>
+  architect: giantswarm/architect@6.13.0
 
 jobs:
   verify:
@@ -36,49 +18,10 @@ jobs:
         command: |
           make verify
 
-  test-policies:
-    machine:
-      image: ubuntu-2204:2024.08.1
-    environment:
-      KIND_VERSION: v0.27.0
-      KUBERNETES_VERSION: v1.25.16
-      DABS_VERSION: v1.4.3
-    steps:
-    - checkout
-    - run:
-        name: Install tools
-        command: |
-          curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64 && chmod +x kind && sudo mv kind /usr/bin
-          curl -sLO https://storage.googleapis.com/kubernetes-release/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl && chmod +x kubectl  && sudo mv kubectl /usr/bin
-          wget -O dabs.sh https://github.com/giantswarm/app-build-suite/releases/download/$DABS_VERSION/dabs.sh && chmod +x dabs.sh && sudo mv dabs.sh /usr/bin
-          sudo apt-get update && sudo apt-get install make --no-install-recommends
-          curl -L https://github.com/kubernetes-sigs/cluster-api/releases/download/v1.3.3/clusterctl-linux-amd64 -o clusterctl && chmod +x clusterctl  && sudo mv clusterctl /usr/bin
-    - run:
-        name: Install policies in kind cluster
-        command: |
-          make kind-create kind-get-kubeconfig install-kyverno
-          make dabs
-    - run-ats:
-        chart_archive_prefix: kyverno-policies-dx
-        tests_dir: helm/kyverno-policies-dx/tests/ats
-    - run:
-        name: Export kind logs
-        when: always
-        command: |
-          kind export logs --name kyverno-cluster logs
-    - store_artifacts:
-        path: logs
-
 workflows:
   workflow:
     jobs:
     - verify:
-          # Needed to trigger job also on git tag.
-        filters:
-          tags:
-            only: /^v.*/
-
-    - test-policies:
           # Needed to trigger job also on git tag.
         filters:
           tags:
@@ -104,72 +47,3 @@ workflows:
             ignore:
             - main
             - master
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-dx-to-capa-app-collection
-        context: architect
-        app_name: kyverno-policies-dx
-        app_namespace: giantswarm
-        app_collection_repo: capa-app-collection
-        requires:
-        - push-kyverno-policies-dx-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-dx-to-vsphere-app-collection
-        context: architect
-        app_name: kyverno-policies-dx
-        app_namespace: giantswarm
-        app_collection_repo: vsphere-app-collection
-        requires:
-        - push-kyverno-policies-dx-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-dx-to-proxmox-app-collection
-        context: architect
-        app_name: kyverno-policies-dx
-        app_namespace: giantswarm
-        app_collection_repo: proxmox-app-collection
-        requires:
-        - push-kyverno-policies-dx-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-dx-to-cloud-director-app-collection
-        context: architect
-        app_name: kyverno-policies-dx
-        app_namespace: giantswarm
-        app_collection_repo: cloud-director-app-collection
-        requires:
-        - push-kyverno-policies-dx-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/
-
-    - architect/push-to-app-collection:
-        name: push-kyverno-policies-dx-to-capz-app-collection
-        context: architect
-        app_name: kyverno-policies-dx
-        app_namespace: giantswarm
-        app_collection_repo: capz-app-collection
-        requires:
-        - push-kyverno-policies-dx-to-catalog
-        filters:
-          branches:
-            ignore: /.*/
-          tags:
-            only: /^v.*/

@@ -1,0 +1,48 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-k8s-initiator-app-deployment-capa
+spec:
+  steps:
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: block-k8s-initiator-app-deployment-capa
+
+  - name: allow-app-with-different-name
+    try:
+    - apply:
+        resource:
+          apiVersion: application.giantswarm.io/v1alpha1
+          kind: App
+          metadata:
+            name: test-allowed-app
+          spec:
+            name: some-other-app
+            namespace: default
+            catalog: default
+            version: "1.0.0"
+            kubeConfig:
+              inCluster: false
+
+  - name: deny-k8s-initiator-app
+    try:
+    - apply:
+        resource:
+          apiVersion: application.giantswarm.io/v1alpha1
+          kind: App
+          metadata:
+            name: test-denied-app
+          spec:
+            name: k8s-initiator-app
+            namespace: default
+            catalog: default
+            version: "1.0.0"
+            kubeConfig:
+              inCluster: false
+        expect:
+        - check:
+            ($error != null): true

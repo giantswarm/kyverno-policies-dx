@@ -1,0 +1,117 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-fallback-config-scaledobjects
+spec:
+  steps:
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: enforce-fallback-config-scaledobjects
+
+  - name: allow-prometheus-trigger-with-fallback
+    try:
+    - apply:
+        resource:
+          apiVersion: keda.sh/v1alpha1
+          kind: ScaledObject
+          metadata:
+            name: test-prometheus-with-fallback
+          spec:
+            scaleTargetRef:
+              name: test-deployment
+            triggers:
+            - type: prometheus
+              metadata:
+                serverAddress: http://prometheus:9090
+                metricName: http_requests_total
+                threshold: "100"
+                query: sum(rate(http_requests_total[2m]))
+            fallback:
+              failureThreshold: 3
+              replicas: 2
+
+  - name: allow-loki-trigger-with-fallback
+    try:
+    - apply:
+        resource:
+          apiVersion: keda.sh/v1alpha1
+          kind: ScaledObject
+          metadata:
+            name: test-loki-with-fallback
+          spec:
+            scaleTargetRef:
+              name: test-deployment
+            triggers:
+            - type: loki
+              metadata:
+                serverAddress: http://loki:3100
+                query: sum(rate({app="test"}[2m]))
+                threshold: "100"
+            fallback:
+              failureThreshold: 3
+              replicas: 1
+
+  - name: allow-cpu-trigger-without-fallback
+    # Precondition not met (no prometheus/loki trigger), so fallback is not required
+    try:
+    - apply:
+        resource:
+          apiVersion: keda.sh/v1alpha1
+          kind: ScaledObject
+          metadata:
+            name: test-cpu-trigger
+          spec:
+            scaleTargetRef:
+              name: test-deployment
+            triggers:
+            - type: cpu
+              metadata:
+                type: Utilization
+                value: "80"
+
+  - name: deny-prometheus-trigger-without-fallback
+    try:
+    - apply:
+        resource:
+          apiVersion: keda.sh/v1alpha1
+          kind: ScaledObject
+          metadata:
+            name: test-prometheus-no-fallback
+          spec:
+            scaleTargetRef:
+              name: test-deployment
+            triggers:
+            - type: prometheus
+              metadata:
+                serverAddress: http://prometheus:9090
+                metricName: http_requests_total
+                threshold: "100"
+                query: sum(rate(http_requests_total[2m]))
+        expect:
+        - check:
+            ($error != null): true
+
+  - name: deny-loki-trigger-without-fallback
+    try:
+    - apply:
+        resource:
+          apiVersion: keda.sh/v1alpha1
+          kind: ScaledObject
+          metadata:
+            name: test-loki-no-fallback
+          spec:
+            scaleTargetRef:
+              name: test-deployment
+            triggers:
+            - type: loki
+              metadata:
+                serverAddress: http://loki:3100
+                query: sum(rate({app="test"}[2m]))
+                threshold: "100"
+        expect:
+        - check:
+            ($error != null): true

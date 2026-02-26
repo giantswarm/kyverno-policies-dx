@@ -1,0 +1,62 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-external-secrets-cluster-secret-store-service-accounts
+spec:
+  steps:
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-external-secrets-cluster-secret-store-service-accounts
+
+  - name: allow-clustersecretstore-without-kubernetes-provider
+    try:
+    - apply:
+        resource:
+          apiVersion: external-secrets.io/v1beta1
+          kind: ClusterSecretStore
+          metadata:
+            name: test-no-kubernetes-provider
+          spec:
+            provider:
+              aws:
+                service: SecretsManager
+                region: us-east-1
+
+  - name: allow-clustersecretstore-with-non-giantswarm-namespace
+    try:
+    - apply:
+        resource:
+          apiVersion: external-secrets.io/v1beta1
+          kind: ClusterSecretStore
+          metadata:
+            name: test-allowed-namespace
+          spec:
+            provider:
+              kubernetes:
+                auth:
+                  serviceAccount:
+                    name: my-sa
+                    namespace: default
+
+  - name: deny-clustersecretstore-with-giantswarm-namespace
+    try:
+    - apply:
+        resource:
+          apiVersion: external-secrets.io/v1beta1
+          kind: ClusterSecretStore
+          metadata:
+            name: test-denied-giantswarm-namespace
+          spec:
+            provider:
+              kubernetes:
+                auth:
+                  serviceAccount:
+                    name: giantswarm-sa
+                    namespace: giantswarm
+        expect:
+        - check:
+            ($error != null): true
