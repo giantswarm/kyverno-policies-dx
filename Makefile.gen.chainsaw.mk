@@ -2,7 +2,7 @@
 #
 #    devctl
 #
-#    https://github.com/giantswarm/devctl/blob/81cdf8c488f860faa1f635b5b9f73c50de363304/pkg/gen/input/makefile/internal/file/Makefile.gen.chainsaw.mk.template
+#    https://github.com/giantswarm/devctl/blob/57c68171868158d915a92dd45201bbeadaa17214/pkg/gen/input/makefile/internal/file/Makefile.gen.chainsaw.mk.template
 #
 
 SHELL:=/usr/bin/env bash
@@ -15,7 +15,7 @@ KIND_CLUSTER_NAME ?= chainsaw-kyverno-cluster
 KUBERNETES_VERSION: v1.33.7
 # repository: giantswarm/kyverno-crds
 KYVERNO_VERSION: v1.16.0
-KYVERNO_POLICIES_APP_NAME ?= "kyverno-policies-dx"
+KYVERNO_POLICIES_APP_NAME ?= "kyverno-policies"
 
 ##@ Test
 
