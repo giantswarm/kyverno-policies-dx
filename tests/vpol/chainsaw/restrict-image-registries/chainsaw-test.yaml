@@ -1,0 +1,58 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-image-registries
+spec:
+  steps:
+  - name: check-policy-ready
+    use:
+      template: ../_steps-templates/validating-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: restrict-image-registries
+
+  - name: allow-pod-with-gs-registry
+    try:
+    - apply:
+        file: pod-gs-registry.yaml
+
+  - name: allow-pod-with-quay-gs-registry
+    try:
+    - apply:
+        file: pod-quay-gs-registry.yaml
+
+  # Policy is in Audit mode — non-compliant pods are admitted but generate a PolicyReport entry.
+  - name: allow-pod-with-external-registry-audit-mode
+    try:
+    - apply:
+        file: pod-external-registry.yaml
+
+  # Kyverno creates an EphemeralReport immediately on admission for audit-mode policy violations.
+  # Assert one exists in the test namespace owned by the non-compliant pod with a fail result.
+  - name: assert-ephemeral-report-created
+    try:
+    - sleep:
+        duration: 30s
+    - script:
+        content: "kubectl get pod test-external-registry -o jsonpath='{.metadata.uid}' -n $NAMESPACE"
+        outputs:
+        - name: uid
+          value: ($stdout)
+    - assert:
+        template: true
+        resource:
+          apiVersion: reports.kyverno.io/v1
+          kind: EphemeralReport
+          metadata:
+            namespace: ($namespace)
+            labels:
+              audit.kyverno.io/resource.uid: ($uid)
+            ownerReferences:
+            - kind: Pod
+              name: test-external-registry
+          spec:
+            results:
+              - category: Developer Experience
+                policy: restrict-image-registries
+                result: fail

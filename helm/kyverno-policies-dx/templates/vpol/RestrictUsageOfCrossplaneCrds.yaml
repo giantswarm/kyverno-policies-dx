@@ -1,0 +1,59 @@
+# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
+{{- if .Values.vpol.enabled }}
+{{- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" }}
+apiVersion: policies.kyverno.io/v1beta1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-usage-of-crossplane-crds
+  annotations:
+    policies.kyverno.io/title: Restrict Crossplane CRDs
+    policies.kyverno.io/category: Developer Experience
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.16.0
+    policies.kyverno.io/subject: Provider
+    policies.kyverno.io/description: >-
+      Restrict managing certain Crossplane resources to Giant Swarm only
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["pkg.crossplane.io"]
+      apiVersions: ["v1"]
+      operations: [CREATE, UPDATE]
+      resources: [providers]
+  matchConditions:
+  - name: cluster-admin
+    expression: >-
+      has(request.userInfo.groups) && request.userInfo.groups.exists(g, g == "kubeadm:cluster-admins") == false
+  evaluation:
+    background:
+      enabled: false
+    admission:
+      enabled: true
+  failurePolicy: Fail
+  validationActions: [Deny]
+  validations:
+  - expression: >-
+      has(request.userInfo.groups) && request.userInfo.groups.exists(g, g == "giantswarm:giantswarm:giantswarm-admins")
+    message: Crossplane providers are only allowed to be managed by subjects in the 'giantswarm:giantswarm:giantswarm-admins' group or with the 'system:masters' cluster admin group
+---
+# https://github.com/giantswarm/giantswarm/issues/33418
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application.giantswarm.io/team: honeybadger
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+  name: kyverno:gs-dx:restrict-usage-of-crossplane-crds
+rules:
+- apiGroups:
+  - pkg.crossplane.io
+  resources:
+  - providers
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+{{- end }}

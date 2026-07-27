@@ -1,0 +1,62 @@
+[[- if .Values.vpol.enabled ]]
+apiVersion: policies.kyverno.io/v1beta1
+kind: ValidatingPolicy
+metadata:
+  name: enforce-fallback-config-scaledobjects
+  annotations:
+    policies.kyverno.io/title: Enforce Fallback config for ScaledObjects
+    policies.kyverno.io/category: Developer Experience
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.16.0
+    policies.kyverno.io/subject: ScaledObject
+    policies.kyverno.io/description: >-
+      ScaledObjects with prometheus or loki triggers should have a fallback configuration to ensure 
+      that they can handle cases where these metric-based scalers aren't working in a predictable way. 
+      The fallback section defines a number of replicas to fall back to if a scaler is in an error state.
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["keda.sh"]
+      operations: [CREATE, UPDATE]
+      apiVersions: ["v1alpha1"]
+      resources: [scaledobjects]
+  matchConditions:
+  - name: type
+    expression: >-
+      object.spec.triggers.exists(t, t.type == 'prometheus' || t.type == 'loki')
+  evaluation:
+    background:
+      enabled: true
+    admission:
+      enabled: true
+  failurePolicy: Fail
+  validationActions: [Deny]
+  validations:
+  - expression: >-
+      has(object.spec.fallback) &&
+      object.spec.fallback.failureThreshold.orValue(0) > 0 && 
+      object.spec.fallback.replicas.orValue(0) > 0
+    message: >-
+      ScaledObjects with prometheus or loki triggers must have a fallback config defined. 
+      The fallback section should include both failureThreshold and replicas fields to ensure 
+      reliable scaling behavior when these metric-based scalers encounter errors.
+      See the related doc for more information: 
+      https://intranet.giantswarm.io/docs/observability/horizontal-autoscaling/#mandatory-fallback-config
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    application.giantswarm.io/team: honeybadger
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+  name: kyverno:gs-dx:enforce-fallback-config-scaledobjects
+rules:
+- apiGroups:
+  - keda.sh
+  resources:
+  - scaledobjects
+  verbs:
+  - get
+  - list
+  - watch
+[[- end ]]
