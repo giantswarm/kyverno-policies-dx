@@ -8,3 +8,6 @@ Installation:
           ImagePullProgressDeadline: 10m
 
 clusterDescription: "Unnamed Cluster"
+
+vpol:
+  enabled: false

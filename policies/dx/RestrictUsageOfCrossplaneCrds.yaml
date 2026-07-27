@@ -1,3 +1,4 @@
+[[- if not .Values.vpol.enabled ]]
 [[- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" ]]
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -5,7 +6,7 @@ metadata:
   name: restrict-usage-of-crossplane-crds
   annotations:
     policies.kyverno.io/title: Restrict Crossplane CRDs
-    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/category: Developer Experience
     policies.kyverno.io/severity: medium
     policies.kyverno.io/minversion: 1.3.0
     policies.kyverno.io/subject: Crossplane
@@ -52,4 +53,5 @@ rules:
   - get
   - list
   - watch
+[[- end ]]
 [[- end ]]

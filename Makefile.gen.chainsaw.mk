@@ -35,6 +35,11 @@ install-policies:
 	touch tests/chainsaw/values.yaml
 	helm upgrade --install $(KYVERNO_POLICIES_APP_NAME) ./helm/$(KYVERNO_POLICIES_APP_NAME) --values ./tests/chainsaw/values.yaml
 
+.PHONY: install-vpol-policies
+install-vpol-policies:
+	touch tests/vpol/chainsaw/values.yaml
+	helm upgrade --install $(KYVERNO_POLICIES_APP_NAME) ./helm/$(KYVERNO_POLICIES_APP_NAME) --values ./tests/vpol/chainsaw/values.yaml
+
 .PHONY: install-extras
 install-extras:
 	hack/chainsaw-extra-resources.sh

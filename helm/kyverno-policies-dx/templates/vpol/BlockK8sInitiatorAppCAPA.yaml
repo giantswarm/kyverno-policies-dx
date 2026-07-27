@@ -1,35 +1,35 @@
 # THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
-{{- if and .Values.provider (not .Values.vpol.enabled) }}
+{{- if and .Values.provider .Values.vpol.enabled }}
 {{- if  eq .Values.provider.kind "capa"  }}
 ---
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+apiVersion: policies.kyverno.io/v1beta1
+kind: ValidatingPolicy
 metadata:
   name: block-k8s-initiator-app-deployment-capa
   annotations:
-    policies.kyverno.io/title: Block K8s Initiator App Deployment on CAPA
+    policies.kyverno.io/title: Block K8s initiator app deployment on CAPA
     policies.kyverno.io/category: Developer Experience
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.3.0
     policies.kyverno.io/subject: App
+    policies.kyverno.io/minversion: 1.16.0
 spec:
-  background: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["application.giantswarm.io"]
+      apiVersions: ["*"]
+      operations: [CREATE, UPDATE]
+      resources: [apps]
+  evaluation:
+    background:
+      enabled: true
+    admission:
+      enabled: true
   failurePolicy: Fail
-  rules:
-    - match:
-        any:
-          - resources:
-              kinds:
-                - App
-      name: block-k8s-initiator-app-deployment-capa
-      validate:
-        message: K8s initiator app is not supported on CAPA.
-        deny:
-          conditions:
-          - key: "{{ `{{` }}request.object.spec.name{{ `}}` }}"
-            operator: Equals
-            value: "k8s-initiator-app"
-  validationFailureAction: Enforce
+  validationActions: [Deny]
+  validations:
+    - expression: >-
+        object.spec.name != "k8s-initiator-app"
+      message: K8s initiator app is not supported on CAPA.
 ---
 # https://github.com/giantswarm/giantswarm/issues/33418
 
