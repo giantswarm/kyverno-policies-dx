@@ -1,4 +1,4 @@
-[[- if not .Values.vpol.enabled ]]
+[[- if not .Values.cel.enabled ]]
 [[- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" ]]
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy

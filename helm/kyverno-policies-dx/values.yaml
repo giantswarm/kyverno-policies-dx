@@ -9,5 +9,5 @@ Installation:
 
 clusterDescription: "Unnamed Cluster"
 
-vpol:
+cel:
   enabled: false

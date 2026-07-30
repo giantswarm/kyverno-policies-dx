@@ -44,8 +44,8 @@ jobs:
           make install-extras
       - name: Install Kyverno ValidatingPolicies
         run: |
-          make install-vpol-policies
+          make install-cel-policies
       - name: Run Chainsaw tests
         run: |
           set -e
-          chainsaw test ./tests/vpol/chainsaw
+          chainsaw test ./tests/cel/chainsaw
