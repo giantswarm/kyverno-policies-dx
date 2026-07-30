@@ -1,4 +1,4 @@
-[[- if .Values.vpol.enabled ]]
+[[- if .Values.cel.enabled ]]
 apiVersion: policies.kyverno.io/v1beta1
 kind: ValidatingPolicy
 metadata:

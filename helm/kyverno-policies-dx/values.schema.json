@@ -40,7 +40,7 @@
         "clusterDescription": {
             "type": "string"
         },
-        "vpol": {
+        "cel": {
             "properties": {
                 "enabled": {
                     "type": "boolean"

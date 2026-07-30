@@ -1,4 +1,4 @@
-[[- if .Values.vpol.enabled ]]
+[[- if .Values.cel.enabled ]]
 [[- if .Capabilities.APIVersions.Has "pkg.crossplane.io/v1/Provider" ]]
 apiVersion: policies.kyverno.io/v1beta1
 kind: ValidatingPolicy

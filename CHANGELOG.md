@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update chart icon to use Kyverno-specific icon.
-- New optional switch `vpol.enabled` to move from the deprecated ClusterPolicy to the new ValidatingPolicy API
+- New optional switch `cel.enabled` to move from the deprecated ClusterPolicy to the new ValidatingPolicy API
 - Update the `policies.kyverno.io/category` annotation to `Developer Experience`
 
 ## [0.8.3] - 2025-12-12

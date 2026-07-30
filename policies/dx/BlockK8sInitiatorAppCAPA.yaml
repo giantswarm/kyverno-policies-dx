@@ -1,4 +1,4 @@
-[[- if and .Values.provider (not .Values.vpol.enabled) ]]
+[[- if and .Values.provider (not .Values.cel.enabled) ]]
 [[- if  eq .Values.provider.kind "capa"  ]]
 ---
 apiVersion: kyverno.io/v1

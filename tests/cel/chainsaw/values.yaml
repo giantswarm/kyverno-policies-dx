@@ -1,5 +1,5 @@
 provider:
   kind: capa
 
-vpol:
+cel:
   enabled: true

@@ -1,5 +1,4 @@
-# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
-{{- if .Values.vpol.enabled }}
+[[- if .Values.cel.enabled ]]
 apiVersion: policies.kyverno.io/v1beta1
 kind: ValidatingPolicy
 metadata:
@@ -41,4 +40,4 @@ spec:
       )
     message: >-
       Images must come from a trusted Giant Swarm registry.
-{{- end }}
+[[- end ]]
