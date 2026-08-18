@@ -51,3 +51,11 @@ spec:
         bindings:
         - name: name
           value: restrict-usage-of-crossplane-crds
+
+  - name: check-audit-event-on-exec
+    use:
+      template: ../_steps-templates/cluster-policy-ready.yaml
+      with:
+        bindings:
+        - name: name
+          value: audit-event-on-exec

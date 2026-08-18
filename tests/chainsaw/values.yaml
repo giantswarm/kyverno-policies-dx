@@ -1,2 +1,5 @@
 provider:
   kind: capa
+
+optionalPolicies:
+  auditEventOnExec: true
