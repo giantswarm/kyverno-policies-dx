@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New optional policy `audit-event-on-exec`, disabled by default, enable via `optionalPolicies.auditEventOnExec`. Generates a Warning Event on a Pod when it is exec'd into, capturing the user and command. (non cel only)
+
 ### Changed
 
 - Update chart icon to use Kyverno-specific icon.
