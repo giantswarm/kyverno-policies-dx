@@ -1,0 +1,50 @@
+# THIS FILE IS GENERATED WITH 'make generate' - DO NOT EDIT MANUALLY
+{{- if .Values.optionalPolicies.auditEventOnExec }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: audit-event-on-exec
+  annotations:
+    policies.kyverno.io/title: Audit Event on Pod Exec
+    policies.kyverno.io/category: Developer Experience
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.3.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Generates Events on Pods when exec operations occur, capturing user
+      information and commands
+spec:
+  background: false
+  rules:
+    - name: generate-event-on-exec
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod/exec
+      context:
+        - name: parentPodUID
+          apiCall:
+            urlPath: /api/v1/namespaces/{{ `{{` }}request.namespace{{ `}}` }}/pods/{{ `{{` }}request.name{{ `}}` }}
+            jmesPath: metadata.uid
+      generate:
+        apiVersion: v1
+        kind: Event
+        name: exec.{{ `{{` }} random('[a-z0-9]{6}') {{ `}}` }}
+        namespace: "{{ `{{` }}request.namespace{{ `}}` }}"
+        synchronize: false
+        data:
+          firstTimestamp: "{{ `{{` }} time_now_utc() {{ `}}` }}"
+          involvedObject:
+            apiVersion: v1
+            kind: Pod
+            name: "{{ `{{` }} request.name {{ `}}` }}"
+            namespace: "{{ `{{` }} request.namespace {{ `}}` }}"
+            uid: "{{ `{{` }} parentPodUID {{ `}}` }}"
+          lastTimestamp: "{{ `{{` }} time_now_utc() {{ `}}` }}"
+          message: An exec was performed by {{ `{{` }} request.userInfo | to_string(@) {{ `}}` }} running commands {{ `{{` }} request.object.command {{ `}}` }}
+          reason: Exec
+          source:
+            component: kyverno
+          type: Warning
+{{- end }}

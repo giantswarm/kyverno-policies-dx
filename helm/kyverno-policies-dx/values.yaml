@@ -11,3 +11,6 @@ clusterDescription: "Unnamed Cluster"
 
 cel:
   enabled: false
+
+optionalPolicies:
+  auditEventOnExec: false

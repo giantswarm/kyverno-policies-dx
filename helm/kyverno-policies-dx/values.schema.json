@@ -47,6 +47,14 @@
                 }
             },
             "type": "object"
+        },
+        "optionalPolicies": {
+            "properties": {
+                "auditEventOnExec": {
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
         }
     },
     "type": "object"
