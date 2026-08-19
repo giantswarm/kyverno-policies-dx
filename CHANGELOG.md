@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Own the `install-cel-policies` make target in `Makefile.custom.mk`. It lives in the devctl-generated `Makefile.gen.chainsaw.mk` today, but the current template no longer emits it, so the next `align-files` run removes it and breaks the hand-written `test-kyverno-vpol-policies-with-chainsaw.yaml` workflow, whose `Install Kyverno ValidatingPolicies` step calls it (`make: *** No rule to make target 'install-cel-policies'`). The target is specific to this repository — it is the only one with a `tests/cel/` suite — so it belongs in the file `align-files` does not regenerate.
 - Update chart icon to use Kyverno-specific icon.
 - New optional switch `cel.enabled` to move from the deprecated ClusterPolicy to the new ValidatingPolicy API
 - Update the `policies.kyverno.io/category` annotation to `Developer Experience`
