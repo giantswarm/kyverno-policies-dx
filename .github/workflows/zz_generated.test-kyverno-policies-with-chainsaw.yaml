@@ -2,16 +2,18 @@
 #
 #    devctl
 #
-#    https://github.com/giantswarm/devctl/blob/f7e5e949ad2a8a3fee8bc163fccca25f60faafff/pkg/gen/input/workflows/internal/file/test-kyverno-policies-with-chainsaw.yaml.template
+#    https://github.com/giantswarm/devctl/blob/615e1ddbf1a914ebc2da50b04e107a9294136d76/pkg/gen/input/workflows/internal/file/test-kyverno-policies-with-chainsaw.yaml.template
 #
 
 name: "Test Kyverno Policies with Chainsaw"
 on:
   pull_request: {}
+  merge_group: {}
   workflow_dispatch: {}
 env:
   KYVERNO_POLICIES_APP_NAME: kyverno-policies-dx
   # repository: kubernetes-sigs/kind
+  KIND_CLUSTER_NAME: chainsaw-kyverno-cluster
   KIND_VERSION: v0.25.0
   # repository: kindest/node
   KUBERNETES_VERSION: v1.33.7
@@ -29,24 +31,22 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@06560d18422209e9c1e08e931d477d04bf2674c1 # v0.2.14
-      - name: Download kind
-        run: |
-          curl -sLo kind https://github.com/kubernetes-sigs/kind/releases/download/$KIND_VERSION/kind-linux-amd64 && chmod +x kind && sudo mv kind /usr/bin
-      - name: Download kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-      - name: Download Helm
-        run: |
-          curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-$HELM_VERSION && chmod +x get_helm.sh && ./get_helm.sh
+        uses: kyverno/action-install-chainsaw@1223ef75bedeb59c4e7b5455463d4316e76dff01 # v0.2.15
+      - name: Create kind cluster
+        uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
+        with:
+          node_image: kindest/node:${{ env.KUBERNETES_VERSION }}
+          cluster_name: ${{ env.KIND_CLUSTER_NAME }}
+      - name: Install Helm
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
       - name: Install Make
         run: |
           sudo apt-get update && sudo apt-get install make
       - name: Create kind cluster and install kyverno
         run: |
-          make kind-create kind-get-kubeconfig install-kyverno
+          make kind-get-kubeconfig install-kyverno
       - name: Install extra resources
         run: |
           make install-extras
